@@ -12,7 +12,7 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
   return (
     <div className="fixed w-screen">
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex w-screen h-14 bg-blue-300 items-center justify-between px-12">
+      <nav className="hidden md:flex w-screen h-14 bg-green-300 items-center justify-between px-12">
         <div className="nav-logo">
           {nav_brand}
         </div>
@@ -32,7 +32,7 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
 
       {/* Mobile Navigation */}
       <nav className="md:hidden relative">
-        <div className="bar bg-blue-300 flex items-center justify-between px-5 h-12">
+        <div className="bar bg-green-300 flex items-center justify-between px-5 h-12">
           <div className="nav-logo">
             {nav_brand}
           </div>
@@ -46,7 +46,7 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
           </div>
         </div>
         <div
-          className={`nav-bar -translate-x-full absolute bg-blue-300 h-screen w-64 flex flex-col items-center justify-center duration-300 transition-transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+          className={`nav-bar -translate-x-full absolute bg-green-300 h-screen w-64 flex flex-col items-center justify-center duration-300 transition-transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
         >
           <div className="nav-items">
             <ul className="flex flex-col gap-5">
