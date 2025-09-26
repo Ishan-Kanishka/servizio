@@ -12,8 +12,8 @@ const Hero = () => {
           <h2 className="font-poppins text-5xl text-gray-900 text-center md:text-start">
             Healthy food to live a healthier life in the future
           </h2>
-          <p className="text-md text-gray-900/60 font-poppins">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit dicta assumenda dolore voluptatibus, eius quisquam.
+          <p className="text-md text-gray-900/60 font-poppins mt-2">
+            Healthy meets delicious with fresh ingredients and bold flavors crafted to fuel your best life.
           </p>
           <div className="flex gap-4 mt-4">
             <button className="px-4 py-3 bg-gradient-to-br from-green-800 to-green-500 hover:from-green-700 transition-colors duration-300 text-gray-50 rounded-xl">
