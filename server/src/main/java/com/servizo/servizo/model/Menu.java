@@ -1,9 +1,6 @@
 package com.servizo.servizo.model;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

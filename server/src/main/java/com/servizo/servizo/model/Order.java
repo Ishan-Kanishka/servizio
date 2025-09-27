@@ -3,8 +3,6 @@ package com.servizo.servizo.model;
 import java.sql.Date;
 
 import org.springframework.data.annotation.Id;
-
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
