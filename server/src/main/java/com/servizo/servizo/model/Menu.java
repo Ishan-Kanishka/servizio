@@ -1,9 +1,9 @@
 package com.servizo.servizo.model;
 
-import org.springframework.data.annotation.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,6 @@ public class Menu {
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
-    private Category catId;
+    private Category category;
 
 }

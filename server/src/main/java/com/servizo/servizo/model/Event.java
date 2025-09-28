@@ -2,13 +2,13 @@ package com.servizo.servizo.model;
 
 import java.sql.Date;
 
-import org.springframework.data.annotation.Id;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,8 +26,9 @@ public class Event {
     private Integer numOfPeople;
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "event")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    private Customer customer_id;
+    private Customer customer;
+
     private boolean status;
 }
