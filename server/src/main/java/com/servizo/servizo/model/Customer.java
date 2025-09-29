@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 @AllArgsConstructor

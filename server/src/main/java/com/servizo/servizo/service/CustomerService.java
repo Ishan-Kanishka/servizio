@@ -1,0 +1,58 @@
+package com.servizo.servizo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.servizo.servizo.model.Customer;
+import com.servizo.servizo.repo.CustomerRepo;
+
+@Service
+public class CustomerService {
+    @Autowired
+    private CustomerRepo customerRepo;
+
+    /**
+     * Get all customers
+     * 
+     * @return List of customers
+     */
+    public List<Customer> getCustomers() {
+        return customerRepo.findAll();
+    }
+
+    /**
+     * Save a customer
+     * 
+     * @param customer
+     * @return Customer
+     */
+    public Customer saveCustomer(Customer customer) {
+        return customerRepo.save(customer);
+    }
+
+    /**
+     * Get customer by id
+     * 
+     * @param customerId
+     * @return Customer
+     */
+    public Customer getCustomerById(Long customerId) {
+        return customerRepo.findById(customerId).orElse(null);
+    }
+
+    /**
+     * Delete customer by id
+     * 
+     * @param customerId
+     */
+    public boolean deleteCustomer(Long customerId) {
+        try {
+            customerRepo.deleteById(customerId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
