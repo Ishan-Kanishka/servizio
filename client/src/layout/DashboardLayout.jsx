@@ -22,7 +22,7 @@ function DashboardLayout () {
       <div
         className={`transition-all duration-300 ease-in-out ${isSideBarOpen ? 'md:ml-64' : 'md:ml-24'}`}
       >
-        <header className="w-screen h-12 bg-gradient-to-r from-gray-800 to-gray-600" />
+        <header className="w-screen h-12 bg-gradient-to-r from-green-900 to-green-800/80" />
         <div className="h-screen w-full m-4 relative">
           <Outlet />
         </div>
