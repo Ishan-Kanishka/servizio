@@ -16,5 +16,4 @@ public class ServizoApplication {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-
 }

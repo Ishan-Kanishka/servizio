@@ -1,5 +1,6 @@
 package com.servizo.servizo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int role_id;
-    private String role_name;
+    @Column(name = "role_id")
+    private int roleId;
+    @Column(name = "role_name", unique = true, nullable = false)
+    private String roleName;
 }
