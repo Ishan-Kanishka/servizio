@@ -15,5 +15,4 @@ public class EventRequestDTO {
     private String description;
     private Date eventDate;
     private Integer numOfPeople;
-    private Date updatedAt;
 }
