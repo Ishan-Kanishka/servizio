@@ -29,13 +29,13 @@ public class MenuController {
     public ResponseEntity<GeneralResDTO> getMenus() {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            List<Menu> menus = menuService.getAllMenus();
+            List<MenuResponseDTO> menus = menuService.getAllMenus();
             res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(),
                     menus);
             return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

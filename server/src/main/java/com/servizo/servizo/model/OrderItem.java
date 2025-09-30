@@ -1,5 +1,7 @@
 package com.servizo.servizo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -20,6 +22,7 @@ public class OrderItem {
     @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     private Integer quantity;
@@ -28,5 +31,6 @@ public class OrderItem {
     @ManyToOne
     @MapsId("menuId")
     @JoinColumn(name = "menu_id")
+    @JsonBackReference
     private Menu menu;
 }

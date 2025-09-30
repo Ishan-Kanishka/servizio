@@ -1,5 +1,7 @@
 package com.servizo.servizo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class Menu {
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
+    @JsonBackReference
     private Category category;
 
 }

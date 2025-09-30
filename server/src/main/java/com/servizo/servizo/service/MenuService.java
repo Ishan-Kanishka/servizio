@@ -1,7 +1,11 @@
 package com.servizo.servizo.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +20,21 @@ import com.servizo.servizo.repo.MenuRepo;
 public class MenuService {
     @Autowired
     private MenuRepo menuRepo;
-
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private CategoryRepo categoryRepo;
 
-    public List<Menu> getAllMenus() {
-        return menuRepo.findAll();
+    public List<MenuResponseDTO> getAllMenus() {
+        // return menuRepo.findAll();
+        List<Menu> menus = menuRepo.findAll();
+        List<MenuResponseDTO> menuList = new ArrayList<>();
+        for (Menu menu : menus) {
+            MenuResponseDTO _menu = new MenuResponseDTO(menu.getMenuId(), menu.getName(), menu.getDescription(),
+                    menu.getImgUrl(), menu.getPrice(), menu.isAvailable(), menu.getCategory().getCatName());
+            menuList.add(_menu);
+        }
+        return menuList;
     }
 
     public Menu getMenuById(Long id) {
@@ -78,15 +91,22 @@ public class MenuService {
 
     public void init_table() {
         if (menuRepo.count() == 0) {
+            Category category;
+            if (categoryRepo.count() == 0) {
+                category = categoryService.saveCategory(new Category(null, "Lunch", null));
+            } else {
+                category = categoryRepo.findAll().get(0);
+            }
+
             List<Menu> menus = List.of(
                     new Menu(null, "Burger", "Delicious beef burger", "https://example.com/1.png", 1200, true, null),
                     new Menu(null, "Pizza", "Cheesy pepperoni pizza", "https://example.com/2.png", 1500, true, null),
-
                     new Menu(null, "Pasta", "Creamy Alfredo pasta", "https://example.com/3.png", 1300, true, null),
                     new Menu(null, "Salad", "Fresh garden salad", "https://example.com/4.png", 800, true, null),
                     new Menu(null, "Sushi", "Assorted sushi platter", "https://example.com/5.png", 2000, true, null),
                     new Menu(null, "Steak", "Grilled ribeye steak", "https://example.com/6.png", 2500, true, null),
                     new Menu(null, "Tacos", "Spicy chicken tacos", "https://example.com/7.png", 1100, true, null));
+            menus.forEach(menu -> menu.setCategory(category));
             menuRepo.saveAll(menus);
         }
     }
