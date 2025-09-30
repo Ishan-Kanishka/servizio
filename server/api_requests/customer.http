@@ -1,0 +1,36 @@
+/*
+## Get Customers
+*/
+http://localhost:8080/api/v1/customer/
+
+HTTP/1.1 204  - No Content
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+content-type: application/json
+date: Mon, 29 Sep 2025 14:53:41 GMT
+connection: close
+/*
+## Save Customer
+*/
+###
+POST http://localhost:8080/api/v1/customer/save_customer
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "mypassword",
+  "dateOfBirth": "1990-05-25",
+  "phoneNumbers": ["123-456-7890", "098-765-4321"],
+  "address": "123 Main St",
+  "zipCode": "12345",
+  "city": "New York",
+  "country": "USA"
+}
+
+HTTP/1.1 404  - Not Found
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+content-type: application/json
+transfer-encoding: chunked
+date: Mon, 29 Sep 2025 14:59:17 GMT
+connection: close

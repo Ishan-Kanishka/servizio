@@ -1,5 +1,6 @@
 package com.servizo.servizo.model;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,7 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class OrderItem {
-    private Long orderItemId;
+    @EmbeddedId
+    private OrderItemID orderItemId;
 
     @ManyToOne
     @MapsId("orderId")

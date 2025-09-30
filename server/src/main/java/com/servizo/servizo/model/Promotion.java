@@ -1,6 +1,7 @@
 package com.servizo.servizo.model;
 
-import jakarta.persistence.Column;
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,14 +11,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Role {
+public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private int roleId;
-    @Column(name = "role_name", unique = true, nullable = false)
-    private String roleName;
+    private Long promotionId;
+    private String name;
+    private Date startDate;
+    private Date endDate;
+    private Integer discount;
 }

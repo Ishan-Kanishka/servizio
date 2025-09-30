@@ -1,8 +1,19 @@
 package com.servizo.servizo.controller;
 
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.servizo.servizo.DTO.GeneralResDTO;
+import com.servizo.servizo.model.Order;
+import com.servizo.servizo.service.OrderService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 @CrossOrigin
@@ -10,9 +21,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/v1/order/")
 public class OrderController {
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping({ "/", "/getOrders" })
-    public String getOrders() {
-        return "Hello, World!";
+    public ResponseEntity<GeneralResDTO> getOrders() {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            List<Order> orders = orderService.getOrders();
+            if (orders != null && !orders.isEmpty()) {
+                res.setResponse(HttpStatus.ACCEPTED.value(), HttpStatus.ACCEPTED.getReasonPhrase(),
+                        orders);
+                return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+            } else {
+                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(),
+                        null);
+                return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
