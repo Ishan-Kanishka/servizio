@@ -11,28 +11,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servizo.servizo.DTO.GeneralResDTO;
-import com.servizo.servizo.model.Employee;
-import com.servizo.servizo.service.EmployeeService;
+import com.servizo.servizo.model.Category;
+import com.servizo.servizo.service.CategoryService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/employees")
-public class EmployeeController {
+@RequestMapping("/api/v1/categories")
+public class CategoryController {
 
     @Autowired
-    private EmployeeService employeeService;
+    private CategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<GeneralResDTO> getAll() {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), employeeService.getAll());
+        res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), categoryService.getAll());
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<GeneralResDTO> create(@RequestBody Employee employee) {
+    public ResponseEntity<GeneralResDTO> create(@RequestBody Category category) {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), employeeService.save(employee));
+        res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), categoryService.save(category));
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 }

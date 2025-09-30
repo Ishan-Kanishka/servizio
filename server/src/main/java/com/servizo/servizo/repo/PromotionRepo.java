@@ -7,3 +7,5 @@ import com.servizo.servizo.model.Promotion;
 public interface PromotionRepo extends JpaRepository<Promotion, Long> {
 
 }
+
+

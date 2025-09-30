@@ -11,28 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servizo.servizo.DTO.GeneralResDTO;
-import com.servizo.servizo.model.Employee;
-import com.servizo.servizo.service.EmployeeService;
+import com.servizo.servizo.model.User;
+import com.servizo.servizo.service.UserService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/employees")
-public class EmployeeController {
-
+@RequestMapping("/api/v1/users")
+public class UserController {
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
     @GetMapping
     public ResponseEntity<GeneralResDTO> getAll() {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), employeeService.getAll());
+        res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), userService.getAll());
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<GeneralResDTO> create(@RequestBody Employee employee) {
+    public ResponseEntity<GeneralResDTO> create(@RequestBody User user) {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), employeeService.save(employee));
+        res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), userService.save(user));
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 }

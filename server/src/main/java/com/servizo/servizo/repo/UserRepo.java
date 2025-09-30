@@ -2,9 +2,9 @@ package com.servizo.servizo.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.servizo.servizo.model.Table;
+import com.servizo.servizo.model.User;
 
-public interface TableRepo extends JpaRepository<Table, Long> {
+public interface UserRepo extends JpaRepository<User, Long> {
 
 }
 
