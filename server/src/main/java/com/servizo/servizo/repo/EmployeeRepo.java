@@ -7,3 +7,5 @@ import com.servizo.servizo.model.Employee;
 public interface EmployeeRepo extends JpaRepository<Employee, Long> {
 
 }
+
+
