@@ -7,3 +7,5 @@ import com.servizo.servizo.model.Category;
 public interface CategoryRepo extends JpaRepository<Category, Long> {
 
 }
+
+

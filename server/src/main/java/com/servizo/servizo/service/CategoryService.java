@@ -13,36 +13,11 @@ public class CategoryService {
     @Autowired
     private CategoryRepo categoryRepo;
 
-    public List<Category> getAllCategories() {
+    public List<Category> getAll() {
         return categoryRepo.findAll();
     }
 
-    public Category createCategory(Category category) {
+    public Category save(Category category) {
         return categoryRepo.save(category);
-    }
-
-    public Category getCategoryById(Long id) {
-        return categoryRepo.findById(id).orElse(null);
-    }
-
-    public Category saveCategory(Category category) {
-        return categoryRepo.save(category);
-    }
-
-    public Category updateCategory(Long id, Category categoryDetails) {
-        Category category = categoryRepo.findById(id).orElse(null);
-        if (category == null)
-            return null;
-
-        category.setCatName(categoryDetails.getCatName());
-        return categoryRepo.save(category);
-    }
-
-    public boolean deleteCategory(Long id) {
-        if (!categoryRepo.existsById(id))
-            return false;
-
-        categoryRepo.deleteById(id);
-        return true;
     }
 }
