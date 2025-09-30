@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
     private Long customer_id;
     private String note;
-    private List<OrderItemDTO> order_items;
+    private List<OrderItemDTO> orderItems;
 }

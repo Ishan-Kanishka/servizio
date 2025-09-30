@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servizo.servizo.DTO.GeneralResDTO;
+import com.servizo.servizo.DTO.OrderDTO;
 import com.servizo.servizo.model.Order;
 import com.servizo.servizo.service.OrderService;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin
 @RestController
@@ -46,6 +49,11 @@ public class OrderController {
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/save_order")
+    public ResponseEntity<GeneralResDTO> saveOrder(@RequestBody OrderDTO order) {
+        return null;
     }
 
 }
