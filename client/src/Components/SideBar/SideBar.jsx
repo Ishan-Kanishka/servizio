@@ -77,7 +77,7 @@ function SideBar({isSideBarOpen, setIsSideBarOpen}) {
         <ul className="mt-5 flex flex-col gap-y-4 items-start px-2 text-center text-lg">
           {links.map ((link, index) => (
             <NavLink
-              to={'/dashboard' + link.path}
+              to={'/admin' + link.path}
               end
               key={index}
               className={({isActive}) =>
