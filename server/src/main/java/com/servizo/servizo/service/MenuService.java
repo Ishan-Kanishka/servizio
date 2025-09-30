@@ -5,13 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.servizo.servizo.DTO.MenuRequest;
+import com.servizo.servizo.DTO.MenuResponseDTO;
+import com.servizo.servizo.model.Category;
 import com.servizo.servizo.model.Menu;
+import com.servizo.servizo.repo.CategoryRepo;
 import com.servizo.servizo.repo.MenuRepo;
 
 @Service
 public class MenuService {
     @Autowired
     private MenuRepo menuRepo;
+
+    @Autowired
+    private CategoryRepo categoryRepo;
 
     public List<Menu> getAllMenus() {
         return menuRepo.findAll();
@@ -21,8 +28,32 @@ public class MenuService {
         return menuRepo.findById(id).orElse(null);
     }
 
-    public Menu saveMenu(Menu menu) {
-        return menuRepo.save(menu);
+    public MenuResponseDTO saveMenu(MenuRequest menuRequest) {
+        try {
+            Category category = categoryRepo.findById(menuRequest.getCatId()).orElseThrow(
+                    () -> new Exception("Category not found"));
+            Menu menu = new Menu();
+            menu.setName(menuRequest.getName());
+            menu.setDescription(menuRequest.getDescription());
+            menu.setPrice(menuRequest.getPrice());
+            menu.setImgUrl(menuRequest.getImgUrl());
+            menu.setAvailable(menuRequest.isAvailable());
+            menu.setCategory(category);
+
+            Menu savedMenu = menuRepo.save(menu);
+
+            MenuResponseDTO resDto = new MenuResponseDTO(
+                    savedMenu.getMenuId(),
+                    savedMenu.getName(),
+                    savedMenu.getDescription(),
+                    savedMenu.getImgUrl(),
+                    savedMenu.getPrice(),
+                    savedMenu.isAvailable(),
+                    category.getCatName());
+            return resDto;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public Menu updateMenu(Long id, Menu menuDetails) {

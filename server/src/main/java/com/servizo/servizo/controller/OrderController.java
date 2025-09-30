@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController {
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
     private OrderService orderService;
 
     @GetMapping({ "/", "/getOrders" })

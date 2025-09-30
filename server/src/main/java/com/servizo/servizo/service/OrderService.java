@@ -42,6 +42,12 @@ public class OrderService {
         return orderRepo.findAll();
     }
 
+    /**
+     * Save an order
+     * 
+     * @param orderRequest
+     * @return Saved order or null if error occurs
+     */
     public Order savOrder(OrderDTO orderRequest) {
         try {
             // 1. Customer exists

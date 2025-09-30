@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servizo.servizo.DTO.GeneralResDTO;
+import com.servizo.servizo.DTO.MenuRequest;
+import com.servizo.servizo.DTO.MenuResponseDTO;
 import com.servizo.servizo.model.Menu;
 import com.servizo.servizo.service.MenuService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +41,10 @@ public class MenuController {
     }
 
     @PostMapping("/save_menu")
-    public ResponseEntity<GeneralResDTO> saveMenu(@RequestBody Menu menu) {
+    public ResponseEntity<GeneralResDTO> saveMenu(@RequestBody MenuRequest menu) {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            Menu created_menu = menuService.saveMenu(menu);
+            MenuResponseDTO created_menu = menuService.saveMenu(menu);
             res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), created_menu);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e) {
