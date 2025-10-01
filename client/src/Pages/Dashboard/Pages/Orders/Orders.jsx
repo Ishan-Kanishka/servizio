@@ -1,7 +1,9 @@
+import {useNavigate} from 'react-router-dom';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Edit, Trash2} from 'lucide-react';
 
 const Orders = () => {
+  const navigate = useNavigate ();
   const data = {
     code: 202,
     message: 'Accepted',
@@ -25,6 +27,7 @@ const Orders = () => {
 
   const handleEdit = id => {
     console.log ('Edit order:', id);
+    navigate (`/admin/orders/edit/${id}`);
   };
 
   const handleDelete = id => {
