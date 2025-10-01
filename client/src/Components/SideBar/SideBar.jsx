@@ -1,17 +1,14 @@
 import {
   Receipt,
   Home,
-  LayoutGrid,
   Menu,
-  MessageCircle,
-  Podcast,
-  Smartphone,
   BookOpen,
   Leaf,
   Calendar,
   Users,
   UserCog2Icon,
   ShieldUserIcon,
+  Megaphone,
 } from 'lucide-react';
 import {NavLink} from 'react-router-dom';
 
@@ -57,6 +54,11 @@ function SideBar({isSideBarOpen, setIsSideBarOpen}) {
       name: 'Roles',
       Icon: ShieldUserIcon,
       path: '/roles',
+    },
+    {
+      name: 'Promotions',
+      Icon: Megaphone,
+      path: '/promotions',
     },
   ];
   return (

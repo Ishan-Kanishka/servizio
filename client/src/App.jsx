@@ -14,6 +14,8 @@ import Customers from './Pages/Dashboard/Pages/Customers/Customers';
 import Staff from './Pages/Dashboard/Pages/Staff/Staff';
 import Roles from './Pages/Dashboard/Pages/Roles/Roles';
 import Login from './Pages/Login/Login';
+import Promotions
+  from './Pages/Dashboard/Pages/Promotions/Promotions/Promotions';
 
 const App = () => {
   return (
@@ -40,6 +42,7 @@ const App = () => {
           <Route path="customers" element={<Customers />} />
           <Route path="staff" element={<Staff />} />
           <Route path="roles" element={<Roles />} />
+          <Route path="promotions" element={<Promotions />} />
           <Route
             path="*"
             element={
