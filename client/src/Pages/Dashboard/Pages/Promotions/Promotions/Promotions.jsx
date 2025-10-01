@@ -46,6 +46,10 @@ const Promotions = () => {
     navigate ('/admin/promotions/new');
   };
 
+  const editPromotion = id => {
+    navigate (`/admin/promotions/edit/${id}`);
+  };
+
   const deletePromotion = id => {
     console.log (`Delete promotion with ID: ${id}`);
   };
@@ -131,7 +135,10 @@ const Promotions = () => {
                       </td>
                       <td className="px-6 py-4 text-gray-800">
                         <div className="flex items-center gap-3">
-                          <button className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-md text-xs transition">
+                          <button
+                            onClick={() => editPromotion (promotion.id)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-md text-xs transition"
+                          >
                             <Pencil className="w-4 h-4" />
                             Edit
                           </button>

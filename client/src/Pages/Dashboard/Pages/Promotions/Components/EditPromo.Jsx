@@ -1,4 +1,5 @@
 import React from 'react';
+import {useParams} from 'react-router-dom';
 
 const validate = values => {
   const errors = {};
@@ -20,6 +21,9 @@ const validate = values => {
 };
 
 const EditPromo = ({initialValues, onSubmit, onCancel}) => {
+  // Get id from url params
+  const {id} = useParams ();
+
   const [values, setValues] = React.useState (
     initialValues || {name: '', startDate: '', endDate: '', discount: ''}
   );
@@ -43,6 +47,7 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
     const cur = validate (values);
     if (Object.keys (cur).length) return;
     const payload = {
+      id, // include the id here, useful for updating existing promo
       name: values.name.trim (),
       startDate: values.startDate,
       endDate: values.endDate,
@@ -53,12 +58,22 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
 
   return (
     <div className="w-full bg-white">
-      <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto p-6 bg-white rounded-xl shadow border">
-        <h2 className="text-2xl font-extrabold text-gray-800 mb-6">Edit Promotion</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-2xl mx-auto p-6 bg-white rounded-xl shadow border"
+      >
+        <h2 className="text-2xl font-extrabold text-gray-800 mb-6">
+          Edit Promotion #{id}
+        </h2>
 
         <div className="space-y-5">
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Name</label>
+            <label
+              htmlFor="name"
+              className="block text-sm font-semibold text-gray-700"
+            >
+              Name
+            </label>
             <input
               id="name"
               name="name"
@@ -69,14 +84,18 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
               className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('name') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
               placeholder="e.g., Summer Sale"
             />
-            {hasError ('name') && (
-              <p className="mt-1 text-xs text-red-600">{errors.name}</p>
-            )}
+            {hasError ('name') &&
+              <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="startDate" className="block text-sm font-semibold text-gray-700">Start Date</label>
+              <label
+                htmlFor="startDate"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Start Date
+              </label>
               <input
                 id="startDate"
                 name="startDate"
@@ -86,13 +105,17 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
                 onBlur={handleBlur}
                 className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('startDate') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
               />
-              {hasError ('startDate') && (
-                <p className="mt-1 text-xs text-red-600">{errors.startDate}</p>
-              )}
+              {hasError ('startDate') &&
+                <p className="mt-1 text-xs text-red-600">{errors.startDate}</p>}
             </div>
 
             <div>
-              <label htmlFor="endDate" className="block text-sm font-semibold text-gray-700">End Date</label>
+              <label
+                htmlFor="endDate"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                End Date
+              </label>
               <input
                 id="endDate"
                 name="endDate"
@@ -102,14 +125,18 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
                 onBlur={handleBlur}
                 className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('endDate') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
               />
-              {hasError ('endDate') && (
-                <p className="mt-1 text-xs text-red-600">{errors.endDate}</p>
-              )}
+              {hasError ('endDate') &&
+                <p className="mt-1 text-xs text-red-600">{errors.endDate}</p>}
             </div>
           </div>
 
           <div>
-            <label htmlFor="discount" className="block text-sm font-semibold text-gray-700">Discount (%)</label>
+            <label
+              htmlFor="discount"
+              className="block text-sm font-semibold text-gray-700"
+            >
+              Discount (%)
+            </label>
             <input
               id="discount"
               name="discount"
@@ -123,9 +150,8 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
               className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('discount') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
               placeholder="e.g., 20"
             />
-            {hasError ('discount') && (
-              <p className="mt-1 text-xs text-red-600">{errors.discount}</p>
-            )}
+            {hasError ('discount') &&
+              <p className="mt-1 text-xs text-red-600">{errors.discount}</p>}
           </div>
         </div>
 

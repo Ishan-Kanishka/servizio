@@ -1,145 +1,171 @@
 import React from 'react';
 
-const initialValues = {name: '', startDate: '', endDate: '', discount: ''};
-
-const validate = values => {
-  const errors = {};
-  if (!values.name || !values.name.trim ()) errors.name = 'Name is required';
-  if (!values.startDate) errors.startDate = 'Start date is required';
-  if (!values.endDate) errors.endDate = 'End date is required';
-  if (values.startDate && values.endDate) {
-    const s = new Date (values.startDate);
-    const e = new Date (values.endDate);
-    if (e < s) errors.endDate = 'End date must be after start date';
-  }
-  const d = Number (values.discount);
-  if (values.discount === '' || Number.isNaN (d)) {
-    errors.discount = 'Valid discount is required';
-  } else if (d < 0 || d > 100) {
-    errors.discount = 'Discount must be between 0 and 100';
-  }
-  return errors;
+const initialValues = {
+  name: '',
+  startDate: '',
+  endDate: '',
+  discount: '',
 };
 
-const AddPromo = ({onSubmit, onCancel}) => {
+const AddPromo = () => {
   const [values, setValues] = React.useState (initialValues);
-  const [touched, setTouched] = React.useState ({});
-  const errors = React.useMemo (() => validate (values), [values]);
-  const hasError = key => touched[key] && errors[key];
+  const [errors, setErrors] = React.useState ({});
 
   const handleChange = e => {
     const {name, value} = e.target;
-    setValues (v => ({...v, [name]: value}));
+    setValues (prev => ({...prev, [name]: value}));
   };
 
-  const handleBlur = e => {
-    const {name} = e.target;
-    setTouched (t => ({...t, [name]: true}));
+  const validate = () => {
+    const err = {};
+    if (!values.name.trim ()) err.name = 'Name is required';
+    if (!values.startDate) err.startDate = 'Start date is required';
+    if (!values.endDate) err.endDate = 'End date is required';
+
+    if (values.startDate && values.endDate) {
+      const s = new Date (values.startDate);
+      const e = new Date (values.endDate);
+      if (e < s) err.endDate = 'End date must be after start date';
+    }
+
+    const discount = Number (values.discount);
+    if (values.discount === '' || Number.isNaN (discount)) {
+      err.discount = 'Valid discount is required';
+    } else if (discount < 0 || discount > 100) {
+      err.discount = 'Discount must be between 0 and 100';
+    }
+
+    return err;
   };
 
   const handleSubmit = e => {
     e.preventDefault ();
-    setTouched ({name: true, startDate: true, endDate: true, discount: true});
-    const cur = validate (values);
-    if (Object.keys (cur).length) return;
-    const payload = {
-      name: values.name.trim (),
-      startDate: values.startDate,
-      endDate: values.endDate,
+    const formErrors = validate ();
+    if (Object.keys (formErrors).length > 0) {
+      setErrors (formErrors);
+      return;
+    }
+
+    // Log form data
+    console.log ('Submitted:', {
+      ...values,
       discount: Number (values.discount),
-    };
-    if (onSubmit) onSubmit (payload);
+    });
+
+    // You could also call a callback like onSubmit && onSubmit(payload)
+  };
+
+  const handleCancel = () => {
+    setValues (initialValues);
+    setErrors ({});
   };
 
   return (
     <div className="w-full bg-white">
-      <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto p-6 bg-white rounded-xl shadow border">
-        <h2 className="text-2xl font-extrabold text-gray-800 mb-6">Add Promotion</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-2xl mx-auto p-6 bg-white rounded-xl shadow border"
+      >
+        <h2 className="text-2xl font-extrabold text-gray-800 mb-6">
+          Add Promotion
+        </h2>
 
         <div className="space-y-5">
+          {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Name</label>
+            <label
+              htmlFor="name"
+              className="block text-sm font-semibold text-gray-700"
+            >
+              Name
+            </label>
             <input
-              id="name"
               name="name"
               type="text"
               value={values.name}
               onChange={handleChange}
-              onBlur={handleBlur}
-              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('name') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
-              placeholder="e.g., Summer Sale"
+              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+              placeholder="e.g., Winter Sale"
             />
-            {hasError ('name') && (
-              <p className="mt-1 text-xs text-red-600">{errors.name}</p>
-            )}
+            {errors.name &&
+              <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
           </div>
 
+          {/* Start & End Date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="startDate" className="block text-sm font-semibold text-gray-700">Start Date</label>
+              <label
+                htmlFor="startDate"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Start Date
+              </label>
               <input
-                id="startDate"
                 name="startDate"
                 type="date"
                 value={values.startDate}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('startDate') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${errors.startDate ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
               />
-              {hasError ('startDate') && (
-                <p className="mt-1 text-xs text-red-600">{errors.startDate}</p>
-              )}
+              {errors.startDate &&
+                <p className="text-xs text-red-600 mt-1">{errors.startDate}</p>}
             </div>
 
             <div>
-              <label htmlFor="endDate" className="block text-sm font-semibold text-gray-700">End Date</label>
+              <label
+                htmlFor="endDate"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                End Date
+              </label>
               <input
-                id="endDate"
                 name="endDate"
                 type="date"
                 value={values.endDate}
                 onChange={handleChange}
-                onBlur={handleBlur}
-                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('endDate') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${errors.endDate ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
               />
-              {hasError ('endDate') && (
-                <p className="mt-1 text-xs text-red-600">{errors.endDate}</p>
-              )}
+              {errors.endDate &&
+                <p className="text-xs text-red-600 mt-1">{errors.endDate}</p>}
             </div>
           </div>
 
+          {/* Discount */}
           <div>
-            <label htmlFor="discount" className="block text-sm font-semibold text-gray-700">Discount (%)</label>
+            <label
+              htmlFor="discount"
+              className="block text-sm font-semibold text-gray-700"
+            >
+              Discount (%)
+            </label>
             <input
-              id="discount"
               name="discount"
               type="number"
+              value={values.discount}
               min="0"
               max="100"
               step="1"
-              value={values.discount}
               onChange={handleChange}
-              onBlur={handleBlur}
-              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('discount') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
-              placeholder="e.g., 20"
+              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${errors.discount ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+              placeholder="e.g., 25"
             />
-            {hasError ('discount') && (
-              <p className="mt-1 text-xs text-red-600">{errors.discount}</p>
-            )}
+            {errors.discount &&
+              <p className="text-xs text-red-600 mt-1">{errors.discount}</p>}
           </div>
         </div>
 
+        {/* Buttons */}
         <div className="mt-6 flex items-center justify-end gap-3">
           <button
             type="button"
-            onClick={() => onCancel && onCancel ()}
+            onClick={handleCancel}
             className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-md shadow transition"
+            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md shadow transition"
           >
             Save Promotion
           </button>
@@ -150,5 +176,3 @@ const AddPromo = ({onSubmit, onCancel}) => {
 };
 
 export default AddPromo;
-
-

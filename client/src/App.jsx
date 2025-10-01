@@ -20,7 +20,7 @@ import EventRequest from './Pages/EventRequest/EventRequest';
 import Promotions
   from './Pages/Dashboard/Pages/Promotions/Promotions/Promotions';
 import AddPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
-import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
+import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/EditPromo';
 
 const App = () => {
   return (
