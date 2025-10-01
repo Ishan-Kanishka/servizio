@@ -1,0 +1,23 @@
+Relationship Mapping:
+
+Role(role_id, role_name)
+
+User(user_id, name, date_of_birth, role_id)
+UserPhone(user_id, phone_number)
+
+Customer(user_id, zip_code, address)
+Employee(user_id, hired_date, salary)
+
+Event(event_id, description, event_date, num_of_people, updated_at, customer_id, status)
+
+Order(order_id, total_price, note, status, customer_id, order_date)
+OrderItem(order_item_id, order_id, quantity, menu_id)
+
+Menu(menu_id, name, description, img_url, price, is_available, cat_id)
+
+Category(cat_id, cat_name)
+Ingredients(ing_id, name)
+
+MenuIngredient(menu_id, ing_id, quantity, unit)
+
+Promotion(promo_id, name, start_date, end_date, price, employee_id)
