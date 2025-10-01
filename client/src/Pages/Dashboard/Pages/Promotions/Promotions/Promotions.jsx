@@ -1,5 +1,6 @@
 import {Award, Pencil, Plus, Trash2} from 'lucide-react';
 import BreadCrumb from '../../../../../Components/BradCrumb/BreadCrumb';
+import {useNavigate} from 'react-router-dom';
 
 const Promotions = () => {
   const promotions = [
@@ -39,6 +40,11 @@ const Promotions = () => {
       discount: '15%',
     },
   ];
+  const navigate = useNavigate ();
+
+  const addNewPromotion = () => {
+    navigate ('/admin/promotions/new');
+  };
 
   const deletePromotion = id => {
     console.log (`Delete promotion with ID: ${id}`);
@@ -66,7 +72,10 @@ const Promotions = () => {
             </h1>
           </div>
           <div className="flex-1 flex justify-end">
-            <button className="inline-flex items-center gap-2 px-4 py-2 border border-green-600 text-green-600 hover:bg-green-600 font-bold rounded-md shadow transition-all duration-300 hover:text-white group">
+            <button
+              onClick={addNewPromotion}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-green-600 text-green-600 hover:bg-green-600 font-bold rounded-md shadow transition-all duration-300 hover:text-white group"
+            >
               <Plus className="w-6 h-6 border-1 border-green-600 rounded-full p-1 group-hover:border-white group-hover:text-white" />
               Add Promotion
             </button>
