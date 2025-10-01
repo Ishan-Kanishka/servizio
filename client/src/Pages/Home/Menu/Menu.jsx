@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 const Menu = () => {
   const menu = [
@@ -6,39 +6,51 @@ const Menu = () => {
       name: 'Dosa',
       price: 50,
       description: 'A crispy South Indian delicacy...',
-      image: 'https://picsum.photos/seed/dosa/400/300',
+      imgUrl: 'https://picsum.photos/seed/dosa/400/300',
     },
     {
       name: 'Idli',
       price: 30,
       description: 'Steamed rice cakes...',
-      image: 'https://picsum.photos/seed/idli/400/300',
+      imgUrl: 'https://picsum.photos/seed/idli/400/300',
     },
     {
       name: 'Vada',
       price: 40,
       description: 'A savory fried snack...',
-      image: 'https://picsum.photos/seed/vada/400/300',
+      imgUrl: 'https://picsum.photos/seed/vada/400/300',
     },
     {
       name: 'Sambar',
       price: 60,
       description: 'A flavorful lentil-based stew...',
-      image: 'https://picsum.photos/seed/sambar/400/300',
+      imgUrl: 'https://picsum.photos/seed/sambar/400/300',
     },
     {
       name: 'Chutney',
       price: 20,
       description: 'A variety of condiments...',
-      image: 'https://picsum.photos/seed/chutney/400/300',
+      imgUrl: 'https://picsum.photos/seed/chutney/400/300',
     },
     {
       name: 'Uttapam',
       price: 70,
       description: 'A thick pancake topped with vegetables...',
-      image: 'https://picsum.photos/seed/uttapam/400/300',
+      imgUrl: 'https://picsum.photos/seed/uttapam/400/300',
     },
   ];
+
+  const [data, setData] = useState ({data: menu});
+  const getMenus = async () => {
+    let res = await fetch ('http://localhost:8080/api/v1/menus/');
+    let data = await res.json ();
+    console.log (data);
+    setData (data);
+  };
+
+  useEffect (() => {
+    getMenus ();
+  }, []);
 
   return (
     <section className="px-4 md:px-12 py-10 bg-gradient-to-br from-white via-slate-50 to-slate-100 min-h-screen">
@@ -48,14 +60,14 @@ const Menu = () => {
         </h2>
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {menu.map (item => (
+          {data.data.map (item => (
             <div
               key={item.name}
               className="relative rounded-3xl overflow-hidden shadow-xl bg-white hover:shadow-2xl transition-shadow duration-300 group"
             >
               <figure className="overflow-hidden">
                 <img
-                  src={item.image}
+                  src={item.imgUrl}
                   alt={item.name}
                   className="h-60 w-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out"
                 />

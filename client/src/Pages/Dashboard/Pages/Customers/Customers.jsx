@@ -1,5 +1,6 @@
 import {Pencil, Trash2, User} from 'lucide-react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
+import {useEffect, useState} from 'react';
 
 const Customers = () => {
   const data = {
@@ -45,6 +46,18 @@ const Customers = () => {
     ],
   };
 
+  const [customers, setCustomers] = useState (data);
+
+  const getCustomers = async () => {
+    let res = await fetch ('http://localhost:8080/api/v1/customer/');
+    res = await res.json ();
+    setCustomers (res);
+    console.log (res);
+  };
+  useEffect (() => {
+    getCustomers ();
+  }, []);
+
   const handleEdit = customerId => {
     console.log ('Edit customer', customerId);
     // Navigate to edit page or open modal
@@ -77,7 +90,7 @@ const Customers = () => {
 
         {/* Table */}
         <div className="w-full bg-white rounded-xl shadow border overflow-x-auto">
-          {data.data.length > 0
+          {customers.data.length > 0
             ? <table className="min-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-green-100">
                   <tr>
@@ -105,7 +118,7 @@ const Customers = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {data.data.map (customer => (
+                  {customers.data.map (customer => (
                     <tr
                       key={customer.id}
                       className="hover:bg-green-100 odd:bg-gray-50 even:bg-gray-100 transition"

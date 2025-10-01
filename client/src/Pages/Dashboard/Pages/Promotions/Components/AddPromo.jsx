@@ -1,4 +1,5 @@
 import React from 'react';
+import {Navigate, useNavigate} from 'react-router-dom';
 
 const initialValues = {
   name: '',
@@ -10,6 +11,7 @@ const initialValues = {
 const AddPromo = () => {
   const [values, setValues] = React.useState (initialValues);
   const [errors, setErrors] = React.useState ({});
+  const navigate = useNavigate ();
 
   const handleChange = e => {
     const {name, value} = e.target;
@@ -45,14 +47,37 @@ const AddPromo = () => {
       setErrors (formErrors);
       return;
     }
-
-    // Log form data
-    console.log ('Submitted:', {
+    const payload = {
       ...values,
-      discount: Number (values.discount),
-    });
+      discount: Number (values.discount) / 100,
+    };
 
-    // You could also call a callback like onSubmit && onSubmit(payload)
+    console.log ('Submitted:', payload);
+    submitData (payload);
+
+    // setValues (initialValues);
+    navigate ('/admin/promotions');
+  };
+  const submitData = async data => {
+    try {
+      const response = await fetch (
+        'http://localhost:8080/api/v1/promotions/save_promotion',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify (data),
+        }
+      );
+      if (!response.ok) {
+        throw new Error ('Network response was not ok');
+      }
+      const result = await response.json ();
+      console.log ('Success:', result);
+    } catch (error) {
+      console.error ('Error:', error);
+    }
   };
 
   const handleCancel = () => {

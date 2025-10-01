@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Edit, Trash2} from 'lucide-react';
 
@@ -25,6 +26,18 @@ const Events = () => {
     ],
   };
 
+  const [events, setEvents] = useState (data);
+
+  const getEvents = async () => {
+    let res = await fetch ('http://localhost:8080/api/v1/events/');
+    res = await res.json ();
+    setEvents (res);
+  };
+
+  useEffect (() => {
+    getEvents ();
+  }, []);
+
   const handleEdit = id => {
     console.log ('Edit event:', id);
   };
@@ -47,7 +60,7 @@ const Events = () => {
       <div className="px-12 py-6 max-w-6xl mx-auto">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Events</h1>
 
-        {data.data.length === 0
+        {events.data.length === 0
           ? <div className="w-full h-96 flex flex-col items-center justify-center text-gray-400">
               No events found.
             </div>
@@ -78,7 +91,7 @@ const Events = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-100">
-                {data.data.map (event => (
+                {events.data.map (event => (
                   <tr
                     key={event.eventId}
                     className="hover:bg-gray-50 transition"

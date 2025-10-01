@@ -1,9 +1,10 @@
 import {Award, Pencil, Plus, Trash2} from 'lucide-react';
 import BreadCrumb from '../../../../../Components/BradCrumb/BreadCrumb';
 import {useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
 
 const Promotions = () => {
-  const promotions = [
+  const defaultPromotions = [
     {
       id: 1,
       name: 'Summer Sale',
@@ -40,7 +41,21 @@ const Promotions = () => {
       discount: '15%',
     },
   ];
+
+  const [promotions, setPromotions] = useState (defaultPromotions);
   const navigate = useNavigate ();
+
+  const getPromotions = async () => {
+    try {
+      let res = await fetch ('http://localhost:8080/api/v1/promotions/');
+      let data = await res.json ();
+      if (data.code === 200) {
+        setPromotions (data.data);
+      }
+    } catch (error) {
+      console.error ('Error fetching promotions:', error);
+    }
+  };
 
   const addNewPromotion = () => {
     navigate ('/admin/promotions/new');
@@ -52,7 +67,13 @@ const Promotions = () => {
 
   const deletePromotion = id => {
     console.log (`Delete promotion with ID: ${id}`);
+    deletePromotionById (id);
   };
+
+  useEffect (() => {
+    getPromotions ();
+  }, []);
+
   return (
     <div className="w-full min-h-screen bg-white">
       {/* Breadcrumb */}
@@ -115,11 +136,11 @@ const Promotions = () => {
                 <tbody className="bg-white divide-y divide-gray-100">
                   {promotions.map (promotion => (
                     <tr
-                      key={promotion.id}
+                      key={promotion.promotionId || promotion.id}
                       className="hover:bg-gray-50 transition"
                     >
                       <td className="px-6 py-4 text-gray-800">
-                        {promotion.id}
+                        {promotion.promotionId || promotion.id}
                       </td>
                       <td className="px-6 py-4 text-gray-800 capitalize">
                         {promotion.name}
@@ -131,7 +152,7 @@ const Promotions = () => {
                         {promotion.endDate}
                       </td>
                       <td className="px-6 py-4 text-gray-800 font-semibold">
-                        {promotion.discount}
+                        {promotion.discount * 100 + '%'}
                       </td>
                       <td className="px-6 py-4 text-gray-800">
                         <div className="flex items-center gap-3">
@@ -165,7 +186,15 @@ const Promotions = () => {
 
 export default Promotions;
 
-const deletePromotion = id => {
+const deletePromotionById = async id => {
   console.log (`Delete promotion with ID: ${id}`);
-  // api call to delete the promotion
+  let res = await fetch (`http://localhost:8080/api/v1/promotions/${id}`, {
+    method: 'DELETE',
+  });
+  let data = await res.json ();
+  if (data.code === 200) {
+    window.location.reload ();
+  } else {
+    console.error ('Error deleting promotion:', data.message);
+  }
 };

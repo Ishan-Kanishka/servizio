@@ -8,9 +8,10 @@ import {
   Briefcase,
 } from 'lucide-react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
+import {useEffect, useState} from 'react';
 
 const Roles = () => {
-  const data = {
+  const default_data = {
     code: 202,
     message: 'Accepted',
     data: [
@@ -23,6 +24,22 @@ const Roles = () => {
       {roleId: 5, roleName: 'MANAGER'},
     ],
   };
+
+  const [roles, setRoles] = useState (default_data);
+
+  const getRoles = async () => {
+    try {
+      const response = await fetch ('http://localhost:8080/api/v1/role/');
+      const jsonData = await response.json ();
+      setRoles (jsonData);
+    } catch (error) {
+      console.error ('Error fetching roles:', error);
+    }
+  };
+
+  useEffect (() => {
+    getRoles ();
+  }, []);
 
   const roleIcons = {
     ADMIN: (
@@ -63,7 +80,7 @@ const Roles = () => {
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Roles</h1>
 
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {data.data.map (role => (
+          {roles.data.map (role => (
             <div
               key={role.roleId}
               className="bg-white border border-gray-200 rounded-xl shadow-md p-6 transition hover:scale-[1.02] hover:shadow-lg duration-300 ease-in-out group"

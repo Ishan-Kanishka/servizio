@@ -1,6 +1,7 @@
 import {useNavigate} from 'react-router-dom';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Edit, Trash2} from 'lucide-react';
+import {useEffect, useState} from 'react';
 
 const Orders = () => {
   const navigate = useNavigate ();
@@ -25,6 +26,18 @@ const Orders = () => {
     ],
   };
 
+  const [orders, setOrders] = useState (data);
+
+  const getOrders = async () => {
+    let res = await fetch ('http://localhost:8080/api/v1/order/');
+    let data = await res.json ();
+    setOrders (data);
+    console.log (data);
+  };
+
+  useEffect (() => {
+    getOrders ();
+  }, []);
   const handleEdit = id => {
     console.log ('Edit order:', id);
     navigate (`/admin/orders/edit/${id}`);
@@ -48,12 +61,12 @@ const Orders = () => {
       <div className="px-12 py-6">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Orders</h1>
 
-        {data.data.length === 0
+        {orders.data.length === 0
           ? <div className="w-full h-96 flex flex-col items-center justify-center text-gray-400">
               No orders found.
             </div>
           : <div className="flex flex-col gap-6 max-w-4xl mx-auto">
-              {data.data.map (order => (
+              {orders.data.map (order => (
                 <div
                   key={order.orderId}
                   className="bg-white p-6 rounded-lg shadow flex flex-col sm:flex-row justify-between items-start sm:items-center"
@@ -70,8 +83,8 @@ const Orders = () => {
                       </span>
                     </div>
                     <p className="text-gray-600 mb-2">
-                      <span className="font-semibold">Price:</span> $
-                      {(order.price / 100).toFixed (2)}
+                      <span className="font-semibold">Price:</span> Rs.
+                      {order.price}
                     </p>
                     <p className="text-gray-600 mb-2">
                       <span className="font-semibold">Note:</span> {order.note}

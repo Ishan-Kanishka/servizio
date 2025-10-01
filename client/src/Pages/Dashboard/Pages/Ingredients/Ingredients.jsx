@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Leaf, Pencil, Trash2} from 'lucide-react';
 
@@ -12,6 +13,17 @@ const Ingredients = () => {
       },
     ],
   };
+  const [ingredients, setIngredients] = useState (data);
+
+  const getIngredients = async () => {
+    let res = await fetch ('http://localhost:8080/api/v1/ingredients/');
+    let parsedRes = await res.json ();
+    setIngredients (parsedRes);
+  };
+
+  useEffect (() => {
+    getIngredients ();
+  }, []);
 
   const handleUpdate = id => {
     console.log ('Update clicked for ID:', id);
@@ -40,7 +52,7 @@ const Ingredients = () => {
         </h1>
 
         <div className="w-full bg-white rounded-xl shadow-md overflow-x-auto">
-          {data.data.length > 0
+          {ingredients.data.length > 0
             ? <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -56,7 +68,7 @@ const Ingredients = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-100">
-                  {data.data.map (ingredient => (
+                  {ingredients.data.map (ingredient => (
                     <tr
                       key={ingredient.ingId}
                       className="hover:bg-gray-50 transition"

@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {ImageOff, Edit, Trash2} from 'lucide-react';
 
@@ -88,6 +89,17 @@ const Menu = () => {
       },
     ],
   };
+  const [menus, setMenus] = useState (data);
+
+  const getMenus = async () => {
+    let res = await fetch ('http://localhost:8080/api/v1/menus/');
+    let data = await res.json ();
+    setMenus (data);
+  };
+
+  useEffect (() => {
+    getMenus ();
+  }, []);
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-white">
@@ -104,7 +116,7 @@ const Menu = () => {
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Menu</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {data.data.map (menu => (
+          {menus.data.map (menu => (
             <div
               key={menu.menuId}
               className="group bg-white rounded-xl border border-gray-200 shadow hover:shadow-lg transition duration-300 ease-in-out overflow-hidden"
@@ -133,7 +145,7 @@ const Menu = () => {
 
                 <div className="mt-4 flex justify-between items-center">
                   <span className="text-lg font-bold text-indigo-600">
-                    ${menu.price / 100}
+                    Rs.{menu.price}
                   </span>
 
                   {menu.available
