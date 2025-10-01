@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@jakarta.persistence.Table(name = "restaurant_table")
 public class Table {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
