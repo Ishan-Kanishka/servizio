@@ -51,56 +51,82 @@ const Events = () => {
           ? <div className="w-full h-96 flex flex-col items-center justify-center text-gray-400">
               No events found.
             </div>
-          : <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {data.data.map (event => (
-                <div
-                  key={event.eventId}
-                  className="bg-white rounded-lg shadow p-6 flex flex-col justify-between"
-                >
-                  <div>
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+          : <table className="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Description
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Event Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Number of People
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Last Updated
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-100">
+                {data.data.map (event => (
+                  <tr
+                    key={event.eventId}
+                    className="hover:bg-gray-50 transition"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                      {event.eventId}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       {event.description}
-                    </h2>
-                    <p className="text-gray-600 mb-1">
-                      <span className="font-semibold">Event Date:</span>{' '}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       {new Date (event.eventDate).toLocaleDateString ()}
-                    </p>
-                    <p className="text-gray-600 mb-1">
-                      <span className="font-semibold">Number of People:</span>
-                      {' '}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       {event.numOfPeople}
-                    </p>
-                    <p className="text-gray-600 mb-3">
-                      <span className="font-semibold">Last Updated:</span>{' '}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       {new Date (event.updatedAt).toLocaleDateString ()}
-                    </p>
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${event.status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-                    >
-                      {event.status ? 'Active' : 'Inactive'}
-                    </span>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="mt-6 flex gap-3">
-                    <button
-                      onClick={() => handleEdit (event.eventId)}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 hover:bg-blue-200 text-sm font-medium rounded-lg transition duration-200"
-                    >
-                      <Edit className="w-4 h-4" />
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete (event.eventId)}
-                      className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-600 hover:bg-red-200 text-sm font-medium rounded-lg transition duration-200"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {event.status
+                        ? <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Confirmed
+                          </span>
+                        : <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            Pending
+                          </span>}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end">
+                      <button
+                        onClick={() => handleEdit (event.eventId)}
+                        className="text-blue-400 hover:text-white hover:bg-blue-400 px-3 py-2 border-2 border-blue-400 transition duration-75 rounded-lg mr-4 flex items-center gap-1"
+                      >
+                        <Edit className="w-4 h-4" />
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete (event.eventId)}
+                        className="text-red-400 hover:text-white hover:bg-red-400 px-3 py-2 border-2 border-red-400 rounded-lg flex items-center gap-1"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>}
       </div>
     </div>
   );
