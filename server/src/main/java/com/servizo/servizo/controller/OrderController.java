@@ -53,7 +53,19 @@ public class OrderController {
 
     @PostMapping("/save_order")
     public ResponseEntity<GeneralResDTO> saveOrder(@RequestBody OrderDTO order) {
-        return null;
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            Order saved = orderService.savOrder(order);
+            if (saved == null) {
+                res.setResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
+                return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+            }
+            res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), saved);
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

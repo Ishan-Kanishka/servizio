@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.servizo.servizo.model.Table;
 
-public interface TableRepo extends JpaRepository<Table, Long> {
+public interface TableRepo extends JpaRepository<Table, Integer> {
 
 }
 
