@@ -2,6 +2,8 @@ package com.servizo.servizo.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -24,8 +26,10 @@ public class Customer extends User {
     private String country;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @JsonManagedReference
     private List<Event> events;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @JsonManagedReference
     private List<Order> orders;
 }

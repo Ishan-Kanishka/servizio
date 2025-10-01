@@ -9,44 +9,41 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.servizo.servizo.DTO.EventRequestDTO;
 import com.servizo.servizo.DTO.GeneralResDTO;
-import com.servizo.servizo.model.Event;
-import com.servizo.servizo.service.EventService;
+import com.servizo.servizo.model.Ingredients;
+import com.servizo.servizo.service.IngredientService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/events")
-public class EventController {
-
+@RequestMapping("/api/v1/ingredients")
+public class IngredientController {
     @Autowired
-    private EventService eventService;
+    private IngredientService ingredientService;
 
-    @GetMapping({ "/", "/get_events" })
-    public ResponseEntity<GeneralResDTO> getEvents() {
+    @GetMapping({ "/", "/get_ingredients" })
+    public ResponseEntity<GeneralResDTO> getIngredients() {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            List<Event> events = eventService.getEvents();
-            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), events);
+            List<Ingredients> ingredients = ingredientService.getAllIngredients();
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), ingredients);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/add_event")
-    public ResponseEntity<GeneralResDTO> addEvent(@RequestBody EventRequestDTO event) {
+    @PostMapping("/save_ingredient")
+    public ResponseEntity<GeneralResDTO> addIngredient(@RequestBody Ingredients ingredient) {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            Event newEvent = eventService.saveEvent(event);
-            res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), newEvent);
+            Ingredients saved_ingredient = ingredientService.addIngredient(ingredient);
+            res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), ingredient);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -54,4 +51,5 @@ public class EventController {
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

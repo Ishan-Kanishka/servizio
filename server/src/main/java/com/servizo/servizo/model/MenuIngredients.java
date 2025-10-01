@@ -7,30 +7,27 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class OrderItem {
+public class MenuIngredients {
+
     @EmbeddedId
-    private OrderItemID orderItemId;
-
-    @ManyToOne
-    @MapsId("orderId")
-    @JoinColumn(name = "order_id")
-    @JsonBackReference
-    private Order order;
-
-    private Integer quantity;
-    private Integer price;
+    private MenuIngredientID id;
 
     @ManyToOne
     @MapsId("menuId")
     @JoinColumn(name = "menu_id")
     @JsonBackReference
     private Menu menu;
+
+    @ManyToOne
+    @MapsId("ingId")
+    @JoinColumn(name = "ing_id")
+    @JsonBackReference
+    private Ingredients ingredients;
+
+    private Integer quantity;
+    private String unit;
 }

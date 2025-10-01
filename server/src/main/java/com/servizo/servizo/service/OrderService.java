@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.servizo.servizo.DTO.OrderDTO;
 import com.servizo.servizo.DTO.OrderItemDTO;
+import com.servizo.servizo.DTO.OrderResponseDTO;
 import com.servizo.servizo.model.Customer;
 import com.servizo.servizo.model.Menu;
 import com.servizo.servizo.model.Order;
@@ -29,7 +30,6 @@ public class OrderService {
 
     @Autowired
     private CustomerRepo customerRepo;
-
     @Autowired
     private MenuRepo menuRepo;
 
@@ -39,10 +39,17 @@ public class OrderService {
      * @return List of orders
      */
     public List<Order> getOrders() {
-        return orderRepo.findAll();
+        List<Order> orders = orderRepo.findAll();
+        return orders;
     }
 
-    public Order savOrder(OrderDTO orderRequest) {
+    /**
+     * Save an order
+     * 
+     * @param orderRequest
+     * @return {Order} Saved order or null if error occurs
+     */
+    public OrderResponseDTO saveOrder(OrderDTO orderRequest) {
         try {
             // 1. Customer exists
             Customer customer = customerRepo.findById(orderRequest.getCustomer_id())
@@ -81,7 +88,17 @@ public class OrderService {
 
             // 5. Update total price
             savedOrder.setPrice(totalPrice);
-            return orderRepo.save(savedOrder);
+            Order order = orderRepo.save(savedOrder);
+
+            OrderResponseDTO orderRes = new OrderResponseDTO();
+            orderRes.setCustomer_id(order.getCustomer().getId());
+            orderRes.setOrderDate(order.getOrderDate());
+            orderRes.setNote(order.getNote());
+            orderRes.setOrderItems(orderRequest.getOrderItems());
+            orderRes.setStatus(order.isStatus());
+            orderRes.setTotalPrice(order.getPrice());
+
+            return orderRes;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
