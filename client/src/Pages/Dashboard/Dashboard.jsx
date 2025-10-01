@@ -3,7 +3,7 @@ import BreadCrumb from '../../Components/BradCrumb/BreadCrumb';
 
 const Dashboard = () => {
   return (
-    <div className="w-full min-h-screen">
+    <div className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-white">
       <div className="w-full px-8 py-4 flex items-center justify-between">
         <BreadCrumb
           main_title={'admin'}
