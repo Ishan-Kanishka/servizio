@@ -1,0 +1,10 @@
+/*
+## Get Orders
+*/
+http://localhost:8080/api/v1/order/
+
+HTTP/1.1 204  - No Content
+vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+content-type: application/json
+date: Mon, 29 Sep 2025 14:33:27 GMT
+connection: close

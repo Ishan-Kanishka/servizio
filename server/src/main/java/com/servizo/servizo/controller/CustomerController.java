@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servizo.servizo.DTO.GeneralResDTO;
-import com.servizo.servizo.DTO.OrderDTO;
-import com.servizo.servizo.DTO.OrderResponseDTO;
-import com.servizo.servizo.model.Order;
-import com.servizo.servizo.service.OrderService;
+import com.servizo.servizo.model.Customer;
+import com.servizo.servizo.service.CustomerService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,24 +19,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/order/")
-public class OrderController {
-
+@RequestMapping("/api/v1/customer")
+public class CustomerController {
     @Autowired
-    private OrderService orderService;
+    private CustomerService customerService;
 
-    @GetMapping({ "/", "/getOrders" })
-    public ResponseEntity<GeneralResDTO> getOrders() {
+    @GetMapping({ "/", "/get_customers" })
+    public ResponseEntity<GeneralResDTO> getCustomers() {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            List<Order> orders = orderService.getOrders();
-            if (orders != null && !orders.isEmpty()) {
-                res.setResponse(HttpStatus.ACCEPTED.value(), HttpStatus.ACCEPTED.getReasonPhrase(),
-                        orders);
+            List<Customer> customers = customerService.getCustomers();
+            if (customers != null && !customers.isEmpty()) {
+                res.setResponse(HttpStatus.ACCEPTED.value(), HttpStatus.ACCEPTED.getReasonPhrase(), customers);
                 return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
             } else {
-                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(),
-                        null);
+                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), null);
                 return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
@@ -48,14 +43,13 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/save_order")
-    public ResponseEntity<GeneralResDTO> saveOrder(@RequestBody OrderDTO order) {
+    @PostMapping("/save_customer")
+    public ResponseEntity<GeneralResDTO> saveCustomer(@RequestBody Customer customer) {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            System.out.println(order);
-            OrderResponseDTO saved_order = orderService.saveOrder(order);
-            if (saved_order != null) {
-                res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), saved_order);
+            Customer savedCustomer = customerService.saveCustomer(customer);
+            if (savedCustomer != null) {
+                res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), savedCustomer);
                 return new ResponseEntity<>(res, HttpStatus.CREATED);
             } else {
                 res.setResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
