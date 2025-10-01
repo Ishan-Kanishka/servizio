@@ -1,4 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
+import {CartProvider} from './Contexts/CartContext';
+
 import Home from './Pages/Home/Home';
 import MainLayout from './layout/MainLayout';
 
@@ -21,21 +23,26 @@ import Promotions
   from './Pages/Dashboard/Pages/Promotions/Promotions/Promotions';
 import AddPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
 import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/EditPromo';
+import Tables from './Pages/Dashboard/Pages/Tables/Tables';
 
 const App = () => {
   return (
     <Suspense fallback={'Loading ...!'}>
       <Routes>
         {/* Main */}
-        <Route path="/" element={<MainLayout />}>
+        <Route
+          path="/"
+          element={
+            <CartProvider>
+              <MainLayout />
+            </CartProvider>
+          }
+        >
           <Route index element={<Home />} />
-
           {/* Login */}
           <Route path="/login" element={<Login />} />
-
           {/* Event Request */}
           <Route path="/event" element={<EventRequest />} />
-
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Route>
@@ -44,6 +51,7 @@ const App = () => {
         <Route path="/admin" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="tables" element={<Tables />} />
           <Route path="menu" element={<Menu />} />
           <Route path="ingredients" element={<Ingredients />} />
           <Route path="events" element={<Event />} />
@@ -53,7 +61,7 @@ const App = () => {
           <Route path="promotions">
             <Route index element={<Promotions />} />
             <Route path="new" element={<AddPromo />} />
-            <Route path="edit:id" element={<EditPromo />} />
+            <Route path="edit/:id" element={<EditPromo />} />
           </Route>
           <Route
             path="*"

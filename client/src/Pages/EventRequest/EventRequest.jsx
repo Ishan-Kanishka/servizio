@@ -13,9 +13,25 @@ const EventRequest = () => {
   const handleSubmit = e => {
     e.preventDefault ();
     console.log ('Form submitted:', data);
-    // API call or validation here
+    submitData (data);
   };
 
+  const submitData = async data => {
+    try {
+      let res = await fetch ('http://localhost:8080/api/v1/events/add_event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify ({...data, userId: 1}),
+      });
+      let result = await res.json ();
+      console.log ('Success:', result);
+      alert ('Event request submitted successfully!');
+    } catch (error) {
+      console.error ('Error:', error);
+    }
+  };
   return (
     <div className="min-h-screen w-full flex items-center justify-center px-4">
       <div className="bg-white shadow-xl rounded-xl w-full max-w-xl p-8 md:p-10 border border-gray-200">

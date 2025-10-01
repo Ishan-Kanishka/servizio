@@ -9,6 +9,7 @@ import {
   UserCog2Icon,
   ShieldUserIcon,
   Megaphone,
+  Armchair,
 } from 'lucide-react';
 import {NavLink} from 'react-router-dom';
 
@@ -23,6 +24,11 @@ function SideBar({isSideBarOpen, setIsSideBarOpen}) {
       name: 'Orders',
       Icon: Receipt,
       path: '/orders',
+    },
+    {
+      name: 'Tables',
+      Icon: Armchair,
+      path: '/tables',
     },
     {
       name: 'Menu',

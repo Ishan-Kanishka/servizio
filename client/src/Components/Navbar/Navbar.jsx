@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
+import {useCart} from '../../Contexts/useCart';
+import {ShoppingCart} from 'lucide-react';
 
 export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
+  const {orderItems} = useCart ();
   const navLinks = [
     {name: 'Home', path: '/'},
     {name: 'Products', path: '/'},
@@ -10,7 +13,7 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState (false);
   return (
-    <div className="fixed w-screen">
+    <div className="fixed w-screen z-10">
       {/* Desktop Navigation */}
       <nav className="hidden md:flex w-screen h-14 bg-green-300 items-center justify-between px-12">
         <div className="nav-logo">
@@ -23,7 +26,14 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
             ))}
           </ul>
         </div>
-        <div className="nav-buttons">
+        <div className="nav-buttons flex items-center gap-6">
+          <div className="relative">
+            <ShoppingCart className="text-lg" />
+            {orderItems.length > 0 &&
+              <span className="text-xs bg-red-500 text-white rounded-full px-1 absolute -mt-2 ml-3">
+                {orderItems.length}
+              </span>}
+          </div>
           <button className="px-3 py-2 rounded-xl bg-gray-100">
             Get Started
           </button>

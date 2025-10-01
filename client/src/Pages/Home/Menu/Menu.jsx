@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useCart} from '../../../Contexts/useCart';
 
 const Menu = () => {
   const menu = [
@@ -41,6 +42,7 @@ const Menu = () => {
   ];
 
   const [data, setData] = useState ({data: menu});
+  const {addToCart} = useCart ();
   const getMenus = async () => {
     let res = await fetch ('http://localhost:8080/api/v1/menus/');
     let data = await res.json ();
@@ -85,7 +87,10 @@ const Menu = () => {
                   <span className="text-lg font-bold text-green-600">
                     ₹{item.price}
                   </span>
-                  <button className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 active:scale-95 transition duration-200 shadow-md">
+                  <button
+                    onClick={() => addToCart (item.menuId)}
+                    className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 active:scale-95 transition duration-200 shadow-md"
+                  >
                     Order Now
                   </button>
                 </div>

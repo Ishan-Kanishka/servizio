@@ -33,8 +33,14 @@ public class TableController {
     @PostMapping
     public ResponseEntity<GeneralResDTO> create(@RequestBody Table table) {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), tableService.save(table));
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
+        try {
+            Table created = tableService.save(table);
+            res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), created);
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
+            return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/{tableId}/reserve")
@@ -61,5 +67,3 @@ public class TableController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }
-
-
