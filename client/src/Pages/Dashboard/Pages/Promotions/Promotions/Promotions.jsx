@@ -40,6 +40,9 @@ const Promotions = () => {
     },
   ];
 
+  const deletePromotion = id => {
+    console.log (`Delete promotion with ID: ${id}`);
+  };
   return (
     <div className="w-full min-h-screen bg-white">
       {/* Breadcrumb */}
@@ -124,7 +127,10 @@ const Promotions = () => {
                             Edit
                           </button>
 
-                          <button className="inline-flex items-center gap-1 px-3 py-1.5 border border-red-500 text-red-500 hover:bg-red-50 rounded-md text-xs font-medium transition">
+                          <button
+                            onClick={() => deletePromotion (promotion.id)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 border border-red-500 text-red-500 hover:bg-red-50 rounded-md text-xs font-medium transition"
+                          >
                             <Trash2 className="w-4 h-4" />
                             Delete
                           </button>
@@ -142,3 +148,8 @@ const Promotions = () => {
 };
 
 export default Promotions;
+
+const deletePromotion = id => {
+  console.log (`Delete promotion with ID: ${id}`);
+  // api call to delete the promotion
+};
