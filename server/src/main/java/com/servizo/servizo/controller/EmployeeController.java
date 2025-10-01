@@ -1,5 +1,7 @@
 package com.servizo.servizo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +24,29 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping
+    @GetMapping({ "/", "/all" })
     public ResponseEntity<GeneralResDTO> getAll() {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), employeeService.getAll());
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        try {
+            List<Employee> employees = employeeService.getAll();
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), employees);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PostMapping
+    @PostMapping("/save_employee")
     public ResponseEntity<GeneralResDTO> create(@RequestBody Employee employee) {
         GeneralResDTO res = new GeneralResDTO();
-        res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), employeeService.save(employee));
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
+        try {
+            Employee savedEmployee = employeeService.save(employee);
+            res.setResponse(HttpStatus.CREATED.value(), "Employee created successfully", savedEmployee);
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
-
-

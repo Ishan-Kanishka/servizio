@@ -43,7 +43,7 @@ public class IngredientController {
         GeneralResDTO res = new GeneralResDTO();
         try {
             Ingredients saved_ingredient = ingredientService.addIngredient(ingredient);
-            res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), ingredient);
+            res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), saved_ingredient);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
