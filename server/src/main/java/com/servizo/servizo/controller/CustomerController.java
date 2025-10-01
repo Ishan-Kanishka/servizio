@@ -2,7 +2,6 @@ package com.servizo.servizo.controller;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @GetMapping({ "/", "/get_customers" })
     public ResponseEntity<GeneralResDTO> getCustomers() {

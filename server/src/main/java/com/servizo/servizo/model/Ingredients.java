@@ -12,11 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@jakarta.persistence.Table(name = "restaurant_table")
-public class Table {
+public class Ingredients {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int capacity;
-    private boolean isAvailable;
+    private Long ingId;
+    private String name;
 }
