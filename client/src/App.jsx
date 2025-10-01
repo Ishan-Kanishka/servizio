@@ -16,6 +16,7 @@ import Roles from './Pages/Dashboard/Pages/Roles/Roles';
 import Login from './Pages/Login/Login';
 import Promotions
   from './Pages/Dashboard/Pages/Promotions/Promotions/Promotions';
+import EventRequest from './Pages/EventRequest/EventRequest';
 
 const App = () => {
   return (
@@ -27,6 +28,9 @@ const App = () => {
 
           {/* Login */}
           <Route path="/login" element={<Login />} />
+
+          {/* Event Request */}
+          <Route path="/event" element={<EventRequest />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
