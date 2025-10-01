@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 export default function Footer () {
   return (
-    <footer className="px-6 md:px-16 lg:px-24 xl:px-32 w-full bg-white">
+    <footer className="px-6 md:px-16 lg:px-24 xl:px-32 w-full bg-green-100 text-black">
       <div className="flex flex-col md:flex-row items-start justify-center gap-10 py-10 border-b border-gray-500/30">
 
         <div className="max-w-96">
@@ -11,9 +11,9 @@ export default function Footer () {
             className="size-10 flex items-center gap-1 text-decoration-none"
             to="/"
           >
-            <img src="/logo.png" alt="favicon" />
+            {/* <img src="/logo.png" alt="favicon" /> */}
             <h2 className="text-xl">
-              Note<span className="brand-color">Deck</span>
+              Ser<span className="brand-color">vizo</span>
             </h2>
           </Link>
           <p className="mt-6 text-sm text-gray-500">
@@ -57,7 +57,7 @@ export default function Footer () {
       <p className="py-4 text-center text-xs md:text-sm text-gray-500">
         Copyright 2025 ©
         {' '}
-        <a href="https://prebuiltui.com">Nadun</a>
+        <a href="https://github.com/thamidu-nadun">Nadun</a>
         . All Right Reserved.
       </p>
     </footer>

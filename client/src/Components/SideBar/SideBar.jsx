@@ -1,17 +1,14 @@
 import {
   Receipt,
   Home,
-  LayoutGrid,
   Menu,
-  MessageCircle,
-  Podcast,
-  Smartphone,
   BookOpen,
   Leaf,
   Calendar,
   Users,
   UserCog2Icon,
   ShieldUserIcon,
+  Megaphone,
 } from 'lucide-react';
 import {NavLink} from 'react-router-dom';
 
@@ -58,6 +55,11 @@ function SideBar({isSideBarOpen, setIsSideBarOpen}) {
       Icon: ShieldUserIcon,
       path: '/roles',
     },
+    {
+      name: 'Promotions',
+      Icon: Megaphone,
+      path: '/promotions',
+    },
   ];
   return (
     <div
@@ -77,7 +79,7 @@ function SideBar({isSideBarOpen, setIsSideBarOpen}) {
         <ul className="mt-5 flex flex-col gap-y-4 items-start px-2 text-center text-lg">
           {links.map ((link, index) => (
             <NavLink
-              to={'/dashboard' + link.path}
+              to={'/admin' + link.path}
               end
               key={index}
               className={({isActive}) =>
