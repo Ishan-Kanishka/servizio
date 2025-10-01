@@ -150,4 +150,3 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
 };
 
 export default EditPromo;
-

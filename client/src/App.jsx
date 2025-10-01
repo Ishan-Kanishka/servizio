@@ -14,8 +14,13 @@ import Customers from './Pages/Dashboard/Pages/Customers/Customers';
 import Staff from './Pages/Dashboard/Pages/Staff/Staff';
 import Roles from './Pages/Dashboard/Pages/Roles/Roles';
 import Login from './Pages/Login/Login';
+import EventRequest from './Pages/EventRequest/EventRequest';
+
+// Promotions
 import Promotions
   from './Pages/Dashboard/Pages/Promotions/Promotions/Promotions';
+import AddPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
+import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
 
 const App = () => {
   return (
@@ -27,6 +32,9 @@ const App = () => {
 
           {/* Login */}
           <Route path="/login" element={<Login />} />
+
+          {/* Event Request */}
+          <Route path="/event" element={<EventRequest />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
@@ -42,7 +50,11 @@ const App = () => {
           <Route path="customers" element={<Customers />} />
           <Route path="staff" element={<Staff />} />
           <Route path="roles" element={<Roles />} />
-          <Route path="promotions" element={<Promotions />} />
+          <Route path="promotions">
+            <Route index element={<Promotions />} />
+            <Route path="new" element={<AddPromo />} />
+            <Route path="edit:id" element={<EditPromo />} />
+          </Route>
           <Route
             path="*"
             element={
