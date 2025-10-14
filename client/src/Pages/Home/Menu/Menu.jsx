@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useCart} from '../../../Contexts/useCart';
+import {getAllMenus} from '../../../utils/Menu';
 
 const Menu = () => {
   const menu = [
@@ -43,15 +44,17 @@ const Menu = () => {
 
   const [data, setData] = useState ({data: menu});
   const {addToCart} = useCart ();
-  const getMenus = async () => {
-    let res = await fetch ('http://localhost:8080/api/v1/menus/');
-    let data = await res.json ();
-    console.log (data);
-    setData (data);
-  };
+  // const getMenus = async () => {
+  //   let res = await fetch ('http://localhost:8080/api/v1/menus/');
+  //   let data = await res.json ();
+  //   console.log (data);
+  //   setData (data);
+  // };
 
   useEffect (() => {
-    getMenus ();
+    getAllMenus ()
+      .then (res => setData (res))
+      .catch (err => console.error (err));
   }, []);
 
   return (

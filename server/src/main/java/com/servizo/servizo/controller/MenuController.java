@@ -15,8 +15,10 @@ import com.servizo.servizo.DTO.MenuResponseDTO;
 import com.servizo.servizo.model.Menu;
 import com.servizo.servizo.service.MenuService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin
 @RestController
@@ -35,6 +37,27 @@ public class MenuController {
                     menus);
             return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
         } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralResDTO> getMenuById(@PathVariable Long id) {
+        try {
+            Menu menu = menuService.getMenuById(id);
+            if (menu != null) {
+                GeneralResDTO res = new GeneralResDTO();
+                res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), menu);
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            } else {
+                GeneralResDTO res = new GeneralResDTO();
+                res.setResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), null);
+                return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            GeneralResDTO res = new GeneralResDTO();
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);

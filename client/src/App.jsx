@@ -24,6 +24,8 @@ import Promotions
 import AddPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
 import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/EditPromo';
 import Tables from './Pages/Dashboard/Pages/Tables/Tables';
+import Checkout from './Pages/Checkout/Checkout';
+import Successful from './Pages/Successful/Successful';
 
 const App = () => {
   return (
@@ -39,6 +41,10 @@ const App = () => {
           }
         >
           <Route index element={<Home />} />
+          {/* Checkout */}
+          <Route path="/checkout" element={<Checkout />} />
+          {/* Successful */}
+          <Route path="/successful" element={<Successful />} />
           {/* Login */}
           <Route path="/login" element={<Login />} />
           {/* Event Request */}

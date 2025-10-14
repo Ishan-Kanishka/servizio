@@ -1,8 +1,8 @@
 import React from 'react';
-import plate_img from '/assets/plate.svg';
+import hero_img from '/assets/plate.svg';
 const Hero = () => {
   const plate_bg = {
-    background: `url(${plate_img})`,
+    background: `url(${hero_img})`,
     backgroundSize: 'cover',
   };
   return (

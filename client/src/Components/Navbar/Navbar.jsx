@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useCart} from '../../Contexts/useCart';
 import {ShoppingCart} from 'lucide-react';
+import {Link} from 'react-router-dom';
 
 export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
   const {orderItems} = useCart ();
@@ -22,17 +23,19 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
         <div className="nav-items">
           <ul className="flex items-center gap-5">
             {navLinks.map ((link, i) => (
-              <li key={i}><a href={link.path}>{link.name}</a></li>
+              <li key={i}><Link to={link.path}>{link.name}</Link></li>
             ))}
           </ul>
         </div>
         <div className="nav-buttons flex items-center gap-6">
           <div className="relative">
-            <ShoppingCart className="text-lg" />
-            {orderItems.length > 0 &&
-              <span className="text-xs bg-red-500 text-white rounded-full px-1 absolute -mt-2 ml-3">
-                {orderItems.length}
-              </span>}
+            <Link to="/checkout">
+              <ShoppingCart className="text-lg" />
+              {orderItems.length > 0 &&
+                <span className="text-xs bg-red-500 text-white rounded-full px-1 absolute -mt-2 ml-3">
+                  {orderItems.length}
+                </span>}
+            </Link>
           </div>
           <button className="px-3 py-2 rounded-xl bg-gray-100">
             Get Started
