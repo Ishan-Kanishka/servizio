@@ -5,7 +5,7 @@ import {useEffect, useState} from 'react';
 
 const Orders = () => {
   const navigate = useNavigate ();
-  const data = {
+  const default_data = {
     code: 202,
     message: 'Accepted',
     data: [
@@ -25,22 +25,39 @@ const Orders = () => {
       },
     ],
   };
+  const sortingOptions = [
+    {value: 'id_asc', label: 'Sort by ID (Asc)'},
+    {value: 'price', label: 'Sort By Price'},
+    {value: 'date', label: 'Sort By Date'},
+    {value: 'status', label: 'Sort By Status'},
+  ];
 
-  const [orders, setOrders] = useState (data);
+  const [orders, setOrders] = useState (default_data);
+  const [sortBy, setSortBy] = useState ('id_asc');
 
-  const getOrders = async () => {
-    let res = await fetch ('http://localhost:8080/api/v1/order/');
+  const getOrders = async sortBy => {
+    let res = await fetch (
+      `http://localhost:8080/api/v1/order/?sortBy=${sortBy}`
+    );
     let data = await res.json ();
     setOrders (data);
     console.log (data);
   };
 
-  useEffect (() => {
-    getOrders ();
-  }, []);
+  useEffect (
+    () => {
+      getOrders (sortBy);
+    },
+    [sortBy]
+  );
   const handleEdit = id => {
     console.log ('Edit order:', id);
     navigate (`/admin/orders/edit/${id}`);
+  };
+
+  const handleFilterOption = e => {
+    setSortBy (e.target.value);
+    console.log ('Filter option selected:', e.target.value);
   };
 
   const handleDelete = id => {
@@ -59,7 +76,24 @@ const Orders = () => {
       </div>
 
       <div className="px-12 py-6">
-        <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Orders</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-6">Orders</h1>
+          <div className="filter flex items-center gap-4 px-10">
+            <select
+              name="sortBy"
+              id="sortBy"
+              className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+              value={sortBy}
+              onChange={handleFilterOption}
+            >
+              {sortingOptions.map (option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {orders.data.length === 0
           ? <div className="w-full h-96 flex flex-col items-center justify-center text-gray-400">
