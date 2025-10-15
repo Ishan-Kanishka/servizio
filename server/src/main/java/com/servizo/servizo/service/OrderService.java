@@ -33,6 +33,9 @@ public class OrderService {
     @Autowired
     private MenuRepo menuRepo;
 
+    @Autowired
+    private OrderSorter orderSorter;
+
     /**
      * Get all orders
      * 
@@ -104,5 +107,11 @@ public class OrderService {
             return null;
         }
 
+    }
+
+    public List<Order> getSortedOrders(String sortBy) {
+        List<Order> orders = orderRepo.findAll();
+        orderSorter.getSortedOrders(orders, sortBy);
+        return orders;
     }
 }

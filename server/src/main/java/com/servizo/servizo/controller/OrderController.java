@@ -18,6 +18,7 @@ import com.servizo.servizo.service.OrderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin
 @RestController
@@ -42,6 +43,28 @@ public class OrderController {
                 return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
             }
         } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{sortBy}")
+    public ResponseEntity<GeneralResDTO> getSortedOrders(@RequestParam String sortBy) {
+        try {
+            GeneralResDTO res = new GeneralResDTO();
+            List<Order> orders = orderService.getSortedOrders(sortBy);
+            if (orders != null && !orders.isEmpty()) {
+                res.setResponse(HttpStatus.ACCEPTED.value(), HttpStatus.ACCEPTED.getReasonPhrase(),
+                        orders);
+                return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
+            } else {
+                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(),
+                        null);
+                return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            GeneralResDTO res = new GeneralResDTO();
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
