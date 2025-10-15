@@ -29,42 +29,20 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping({ "/", "/getOrders" })
-    public ResponseEntity<GeneralResDTO> getOrders() {
+    public ResponseEntity<GeneralResDTO> getOrders(@RequestParam(defaultValue = "id") String sortBy) {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            List<Order> orders = orderService.getOrders();
-            if (orders != null && !orders.isEmpty()) {
-                res.setResponse(HttpStatus.ACCEPTED.value(), HttpStatus.ACCEPTED.getReasonPhrase(),
-                        orders);
-                return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
-            } else {
-                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(),
-                        null);
-                return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
-            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{sortBy}")
-    public ResponseEntity<GeneralResDTO> getSortedOrders(@RequestParam String sortBy) {
-        try {
-            GeneralResDTO res = new GeneralResDTO();
+            // List<Order> orders = orderService.getOrders();
             List<Order> orders = orderService.getSortedOrders(sortBy);
-            if (orders != null && !orders.isEmpty()) {
-                res.setResponse(HttpStatus.ACCEPTED.value(), HttpStatus.ACCEPTED.getReasonPhrase(),
-                        orders);
-                return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
-            } else {
-                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(),
-                        null);
+            System.out.println("Fetched orders: " + orders);
+            if (orders == null || orders.isEmpty()) {
+                res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), null);
                 return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
             }
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), orders);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+
         } catch (Exception e) {
-            GeneralResDTO res = new GeneralResDTO();
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);

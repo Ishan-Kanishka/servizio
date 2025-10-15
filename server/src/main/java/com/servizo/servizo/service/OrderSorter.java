@@ -18,6 +18,7 @@ public class OrderSorter {
 
     public List<Order> getSortedOrders(List<Order> orders, String sortBy) {
         OrderSortStrategy strategy = strategies.getOrDefault(sortBy, strategies.get("id"));
-        return strategy.sort(orders);
+        List<Order> sortedOrders = strategy.sort(orders);
+        return sortedOrders;
     }
 }

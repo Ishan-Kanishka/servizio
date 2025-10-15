@@ -111,7 +111,6 @@ public class OrderService {
 
     public List<Order> getSortedOrders(String sortBy) {
         List<Order> orders = orderRepo.findAll();
-        orderSorter.getSortedOrders(orders, sortBy);
-        return orders;
+        return orderSorter.getSortedOrders(orders, sortBy);
     }
 }
