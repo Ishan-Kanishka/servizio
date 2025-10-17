@@ -20,6 +20,14 @@ public class UserService {
     public User save(User user) {
         return userRepo.save(user);
     }
+
+    public User login(String email, String password) {
+        User user = userRepo.findByEmail(email);
+        System.out.println("Attempting login for email: " + email);
+        System.out.println("Retrieved user: " + user);
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
+    }
 }
-
-
