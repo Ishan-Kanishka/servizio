@@ -1,12 +1,12 @@
 import {Lock, MailIcon, User} from 'lucide-react';
 import {useState} from 'react';
 import useAuth from '../../hooks/useAuth';
-import notify from '../../utils/Notify';
+// import notify from '../../utils/Notify';
 
 const Login = () => {
   // state for login or register
   const [state, setState] = useState ('login');
-  const {login, register} = useAuth ();
+  const {user, login, register} = useAuth ();
 
   // state for input value
   const [data, setData] = useState ({
@@ -21,14 +21,17 @@ const Login = () => {
   };
 
   // handle submit form
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault ();
     if (state === 'login') {
-      const success = login (data.email, data.password);
-      // alert ('Login successful');
-      notify ('Login Successful');
-      if (!success) {
-        alert ('Invalid email or password');
+      const {success, message} = login (data.email, data.password);
+      if (user) {
+        console.log ('User logged in:', user);
+        alert ('Login Successful');
+      }
+      // notify ('Login Successful');
+      if (!success && user === null) {
+        console.log (message);
       }
     } else {
       register (data.name, data.email, data.password);

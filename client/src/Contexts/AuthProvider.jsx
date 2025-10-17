@@ -3,21 +3,46 @@ import AuthContext from './AuthContext';
 
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState (null);
+  const auth_url = 'http://localhost:8080/api/v1/users';
 
-  // dummy user data for illustration
-  const userData = {
-    id: 1,
-    name: 'John Doe',
-    email: 'j@info.com',
-    password: '1234',
-  };
-
-  const login = (email, password) => {
-    if (email === userData.email && password === userData.password) {
-      setUser (userData);
-      return true;
+  const login = async (email, password) => {
+    //     {
+    //     "code": 200,
+    //     "message": "OK",
+    //     "data": {
+    //         "id": 13,
+    //         "name": "John Doe",
+    //         "email": "b@w.com",
+    //         "password": "123",
+    //         "dateOfBirth": "1990-05-25",
+    //         "phoneNumbers": [],
+    //         "role": {
+    //             "roleId": 2,
+    //             "roleName": "CUSTOMER"
+    //         },
+    //         "address": "123 Main St",
+    //         "zipCode": "12345",
+    //         "city": "New York",
+    //         "country": "USA",
+    //         "events": [],
+    //         "orders": []
+    //     }
+    // }
+    const res = await fetch (`${auth_url}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify ({email, password}),
+    });
+    const data = await res.json ();
+    if (res.ok) {
+      setUser (data.data);
+      console.log (data.data);
+      return {success: true};
+    } else {
+      return {success: false, message: data.message};
     }
-    return false;
   };
 
   const logout = () => {

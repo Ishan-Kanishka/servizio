@@ -3,15 +3,17 @@ import {useCart} from '../../Contexts/useCart';
 import {getMenu} from '../../utils/Menu';
 import {createOrder} from '../../utils/Order';
 import {useNavigate} from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const Checkout = () => {
   const {orderItems, clearCart} = useCart ();
   const navigate = useNavigate ();
   const [note, setNote] = useState ('');
-  const customerId = 1; //:TODO: Hardcoded customer ID for demonstration
+  const {user} = useAuth ();
   const [enrichedItems, setEnrichedItems] = useState ([]);
   useEffect (
     () => {
+      console.log (user);
       const fetchMenus = async () => {
         const menus = await Promise.all (
           orderItems.map (async item => {
@@ -33,13 +35,13 @@ const Checkout = () => {
   );
 
   const handleConfirm = () => {
-    if (!customerId) {
+    if (!user) {
       alert ('Please enter your Customer ID');
       return;
     }
 
     const payload = {
-      customer_id: Number (customerId),
+      customer_id: Number (user.id),
       note,
       orderItems: orderItems.map (({menu_id, quantity}) => ({
         menu_id,
@@ -131,7 +133,7 @@ const Checkout = () => {
               <input
                 type="number"
                 id="customerId"
-                value={customerId}
+                value={user ? user.id : ''}
                 disabled
                 placeholder="Enter your customer ID"
                 className="w-full disabled:bg-gray-50 rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 hover:cursor-not-allowed"
