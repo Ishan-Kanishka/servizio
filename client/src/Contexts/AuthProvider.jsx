@@ -1,33 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthContext from './AuthContext';
+import {store, retrieve, remove} from '../utils/LocalStorage';
 
 const AuthProvider = ({children}) => {
   const [user, setUser] = useState (null);
   const auth_url = 'http://localhost:8080/api/v1/users';
 
   const login = async (email, password) => {
-    //     {
-    //     "code": 200,
-    //     "message": "OK",
-    //     "data": {
-    //         "id": 13,
-    //         "name": "John Doe",
-    //         "email": "b@w.com",
-    //         "password": "123",
-    //         "dateOfBirth": "1990-05-25",
-    //         "phoneNumbers": [],
-    //         "role": {
-    //             "roleId": 2,
-    //             "roleName": "CUSTOMER"
-    //         },
-    //         "address": "123 Main St",
-    //         "zipCode": "12345",
-    //         "city": "New York",
-    //         "country": "USA",
-    //         "events": [],
-    //         "orders": []
-    //     }
-    // }
     const res = await fetch (`${auth_url}/login`, {
       method: 'POST',
       headers: {
@@ -38,6 +17,7 @@ const AuthProvider = ({children}) => {
     const data = await res.json ();
     if (res.ok) {
       setUser (data.data);
+      store ('user', data.data);
       console.log (data.data);
       return {success: true};
     } else {
@@ -47,11 +27,25 @@ const AuthProvider = ({children}) => {
 
   const logout = () => {
     setUser (null);
+    remove ('user');
   };
 
   const register = (name, email, password) => {
     setUser ({id: Math.round (Math.random () * 2), name, email, password});
+    store ('user', {
+      id: Math.round (Math.random () * 2),
+      name,
+      email,
+      password,
+    });
   };
+
+  useEffect (() => {
+    const storedUser = retrieve ('user');
+    if (storedUser) {
+      setUser (storedUser);
+    }
+  }, []);
   return (
     <AuthContext.Provider value={{user, login, logout, register}}>
       {children}

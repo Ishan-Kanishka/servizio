@@ -13,7 +13,6 @@ const Checkout = () => {
   const [enrichedItems, setEnrichedItems] = useState ([]);
   useEffect (
     () => {
-      console.log (user);
       const fetchMenus = async () => {
         const menus = await Promise.all (
           orderItems.map (async item => {
