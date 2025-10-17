@@ -1,6 +1,7 @@
 import {Lock, MailIcon, User} from 'lucide-react';
 import {useState} from 'react';
 import useAuth from '../../hooks/useAuth';
+import notify from '../../utils/Notify';
 
 const Login = () => {
   // state for login or register
@@ -33,20 +34,6 @@ const Login = () => {
       register (data.name, data.email, data.password);
     }
     console.log (data);
-  };
-
-  const notify = message => {
-    if (!('Notification' in window)) {
-      alert ('This browser does not support desktop notification');
-    } else if (Notification.permission === 'granted') {
-      new Notification (message);
-    } else if (Notification.permission !== 'denied') {
-      Notification.requestPermission ().then (permission => {
-        if (permission === 'granted') {
-          new Notification (message);
-        }
-      });
-    }
   };
 
   return (
