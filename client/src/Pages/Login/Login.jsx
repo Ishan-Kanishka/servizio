@@ -1,9 +1,11 @@
 import {Lock, MailIcon, User} from 'lucide-react';
 import {useState} from 'react';
+import useAuth from '../../hooks/useAuth';
 
 const Login = () => {
   // state for login or register
   const [state, setState] = useState ('login');
+  const {login, register} = useAuth ();
 
   // state for input value
   const [data, setData] = useState ({
@@ -20,15 +22,36 @@ const Login = () => {
   // handle submit form
   const handleSubmit = e => {
     e.preventDefault ();
+    if (state === 'login') {
+      const success = login (data.email, data.password);
+      // alert ('Login successful');
+      notify ('Login Successful');
+      if (!success) {
+        alert ('Invalid email or password');
+      }
+    } else {
+      register (data.name, data.email, data.password);
+    }
     console.log (data);
+  };
+
+  const notify = message => {
+    if (!('Notification' in window)) {
+      alert ('This browser does not support desktop notification');
+    } else if (Notification.permission === 'granted') {
+      new Notification (message);
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission ().then (permission => {
+        if (permission === 'granted') {
+          new Notification (message);
+        }
+      });
+    }
   };
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full sm:w-[350px] text-center border border-green-800/60 rounded-2xl px-8 bg-green-100 "
-      >
+      <form className="w-full sm:w-[350px] text-center border border-green-800/60 rounded-2xl px-8 bg-green-100 ">
         <h1 className="text-green-900 text-3xl mt-10 font-medium">
           {state === 'login' ? 'Login' : 'Register'}
         </h1>
@@ -82,6 +105,7 @@ const Login = () => {
         </div>
         <button
           type="submit"
+          onClick={handleSubmit}
           className="mt-2 w-full h-11 rounded-full text-white font-bold bg-green-500 hover:opacity-90 transition-opacity"
         >
           {state === 'login' ? 'Login' : 'Create Account'}

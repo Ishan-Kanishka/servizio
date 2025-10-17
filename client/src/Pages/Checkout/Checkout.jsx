@@ -10,7 +10,6 @@ const Checkout = () => {
   const [note, setNote] = useState ('');
   const customerId = 1; //:TODO: Hardcoded customer ID for demonstration
   const [enrichedItems, setEnrichedItems] = useState ([]);
-
   useEffect (
     () => {
       const fetchMenus = async () => {

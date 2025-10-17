@@ -1,5 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
 import {CartProvider} from './Contexts/CartContext';
+import AuthProvider from './Contexts/AuthProvider';
 
 import Home from './Pages/Home/Home';
 import MainLayout from './layout/MainLayout';
@@ -35,9 +36,11 @@ const App = () => {
         <Route
           path="/"
           element={
-            <CartProvider>
-              <MainLayout />
-            </CartProvider>
+            <AuthProvider>
+              <CartProvider>
+                <MainLayout />
+              </CartProvider>
+            </AuthProvider>
           }
         >
           <Route index element={<Home />} />
