@@ -3,11 +3,11 @@ import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {useParams} from 'react-router-dom';
 
 const OrderDetails = () => {
-  const orderId = useParams ();
+  const {id} = useParams ();
   const [orders, setOrders] = useState ([]);
   const getOrderDetails = async () => {
     const res = await fetch (
-      'http://localhost:8080/api/v1/order-items/by-order/1'
+      `http://localhost:8080/api/v1/order-items/by-order/${id}`
     );
     const data = await res.json ();
     if (res.ok) {
