@@ -29,6 +29,7 @@ import Checkout from './Pages/Checkout/Checkout';
 import Successful from './Pages/Successful/Successful';
 import EditIngredients
   from './Pages/Dashboard/Pages/Ingredients/EditIngredients';
+import AddIngredients from './Pages/Dashboard/Pages/Ingredients/AddIngredients';
 
 const App = () => {
   return (
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="menu" element={<Menu />} />
           <Route path="ingredients">
             <Route index element={<Ingredients />} />
+            <Route path="new" element={<AddIngredients />} />
             <Route path="edit/:id" element={<EditIngredients />} />
           </Route>
           <Route path="events" element={<Event />} />
