@@ -1,4 +1,4 @@
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Edit, Trash2} from 'lucide-react';
 import {useEffect, useState} from 'react';
@@ -107,9 +107,12 @@ const Orders = () => {
                 >
                   <div>
                     <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-2xl font-bold text-gray-800">
+                      <Link
+                        to={`/admin/orders/${order.orderId}`}
+                        className="text-2xl font-bold text-gray-800"
+                      >
                         Order #{order.orderId}
-                      </h2>
+                      </Link>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${order.status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
                       >

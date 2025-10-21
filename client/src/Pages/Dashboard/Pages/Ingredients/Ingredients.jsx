@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
-import {Leaf, Pencil, Trash2} from 'lucide-react';
+import {Leaf, Pencil, PlusCircle, Trash2} from 'lucide-react';
 import {deleteIngredient, getIngredients} from './util';
 import {useNavigate} from 'react-router-dom';
 
@@ -56,9 +56,10 @@ const Ingredients = () => {
           </h1>
           <button
             onClick={() => navigator ('new')}
-            className="mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
           >
-            Add New Ingredient
+            <PlusCircle className="w-5 h-5 inline-block mr-2" />
+            Add Ingredient
           </button>
         </div>
 

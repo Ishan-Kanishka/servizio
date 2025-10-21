@@ -30,6 +30,7 @@ import Successful from './Pages/Successful/Successful';
 import EditIngredients
   from './Pages/Dashboard/Pages/Ingredients/EditIngredients';
 import AddIngredients from './Pages/Dashboard/Pages/Ingredients/AddIngredients';
+import OrderDetails from './Pages/Dashboard/Pages/Orders/OrderDetails';
 
 const App = () => {
   return (
@@ -62,7 +63,10 @@ const App = () => {
         {/* Dashboard */}
         <Route path="/admin" element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="orders" element={<Orders />} />
+          <Route path="orders">
+            <Route index element={<Orders />} />
+            <Route path=":id" element={<OrderDetails />} />
+          </Route>
           <Route path="tables" element={<Tables />} />
           <Route path="menu" element={<Menu />} />
           <Route path="ingredients">
