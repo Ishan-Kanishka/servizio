@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Leaf, Pencil, Trash2} from 'lucide-react';
+import {deleteIngredient, getIngredients} from './util';
+import {useNavigate} from 'react-router-dom';
 
 const Ingredients = () => {
   const data = {
@@ -14,22 +16,23 @@ const Ingredients = () => {
     ],
   };
   const [ingredients, setIngredients] = useState (data);
-
-  const getIngredients = async () => {
-    let res = await fetch ('http://localhost:8080/api/v1/ingredients/');
-    let parsedRes = await res.json ();
-    setIngredients (parsedRes);
-  };
+  const navigator = useNavigate ();
 
   useEffect (() => {
-    getIngredients ();
+    getIngredients ().then (res => setIngredients (res));
   }, []);
 
   const handleUpdate = id => {
+    navigator (`edit/${id}`);
     console.log ('Update clicked for ID:', id);
   };
 
   const handleDelete = id => {
+    deleteIngredient (id);
+    setIngredients (prevState => ({
+      ...prevState,
+      data: prevState.data.filter (ingredient => ingredient.ingId !== id),
+    }));
     console.log ('Delete clicked for ID:', id);
   };
 

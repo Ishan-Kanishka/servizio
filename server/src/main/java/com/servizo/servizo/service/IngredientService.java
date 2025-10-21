@@ -17,6 +17,10 @@ public class IngredientService {
         return ingredientRepo.findAll();
     }
 
+    public Ingredients getIngredientById(Long id) {
+        return ingredientRepo.findById(id).orElse(null);
+    }
+
     public Ingredients addIngredient(Ingredients ingredient) {
         return ingredientRepo.save(ingredient);
     }

@@ -27,6 +27,8 @@ import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/EditPromo';
 import Tables from './Pages/Dashboard/Pages/Tables/Tables';
 import Checkout from './Pages/Checkout/Checkout';
 import Successful from './Pages/Successful/Successful';
+import EditIngredients
+  from './Pages/Dashboard/Pages/Ingredients/EditIngredients';
 
 const App = () => {
   return (
@@ -62,7 +64,10 @@ const App = () => {
           <Route path="orders" element={<Orders />} />
           <Route path="tables" element={<Tables />} />
           <Route path="menu" element={<Menu />} />
-          <Route path="ingredients" element={<Ingredients />} />
+          <Route path="ingredients">
+            <Route index element={<Ingredients />} />
+            <Route path="edit/:id" element={<EditIngredients />} />
+          </Route>
           <Route path="events" element={<Event />} />
           <Route path="customers" element={<Customers />} />
           <Route path="staff" element={<Staff />} />
