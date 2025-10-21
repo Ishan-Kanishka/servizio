@@ -79,43 +79,45 @@ const Ingredients = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-100">
-                  {ingredients.data.map (ingredient => (
-                    <tr
-                      key={ingredient.ingId}
-                      className="hover:bg-gray-50 transition"
-                    >
-                      <td className="px-6 py-4 text-sm text-gray-800">
-                        {ingredient.ingId}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-800 capitalize">
-                        <div className="flex items-center gap-2">
-                          <Leaf className="w-4 h-4 text-green-500" />
-                          {ingredient.name}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-right">
-                        <div className="flex justify-end gap-3">
-                          {/* Update Button */}
-                          <button
-                            onClick={() => handleUpdate (ingredient.ingId)}
-                            className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md bg-blue-100 text-blue-600 hover:bg-blue-200 transition"
-                          >
-                            <Pencil className="w-4 h-4" />
-                            Edit
-                          </button>
+                  {ingredients.data
+                    .sort ((a, b) => a.ingId - b.ingId)
+                    .map (ingredient => (
+                      <tr
+                        key={ingredient.ingId}
+                        className="hover:bg-gray-50 transition"
+                      >
+                        <td className="px-6 py-4 text-sm text-gray-800">
+                          {ingredient.ingId}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 capitalize">
+                          <div className="flex items-center gap-2">
+                            <Leaf className="w-4 h-4 text-green-500" />
+                            {ingredient.name}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-right">
+                          <div className="flex justify-end gap-3">
+                            {/* Update Button */}
+                            <button
+                              onClick={() => handleUpdate (ingredient.ingId)}
+                              className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md bg-blue-100 text-blue-600 hover:bg-blue-200 transition"
+                            >
+                              <Pencil className="w-4 h-4" />
+                              Edit
+                            </button>
 
-                          {/* Delete Button */}
-                          <button
-                            onClick={() => handleDelete (ingredient.ingId)}
-                            className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md bg-red-100 text-red-600 hover:bg-red-200 transition"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            {/* Delete Button */}
+                            <button
+                              onClick={() => handleDelete (ingredient.ingId)}
+                              className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md bg-red-100 text-red-600 hover:bg-red-200 transition"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             : <div className="p-6 text-center text-gray-500">
