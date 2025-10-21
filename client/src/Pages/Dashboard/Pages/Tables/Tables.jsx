@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {CheckSquare, XSquare, RefreshCcw} from 'lucide-react';
+import {deleteTable, getTables, releaseTable, reserveTable} from './util';
 
 const Tables = () => {
   const default_data = {
@@ -8,18 +9,8 @@ const Tables = () => {
     message: 'OK',
     data: [
       {
-        id: 1,
-        capacity: 4,
-        available: true,
-      },
-      {
-        id: 2,
-        capacity: 4,
-        available: false,
-      },
-      {
-        id: 3,
-        capacity: 4,
+        id: null,
+        capacity: 0,
         available: false,
       },
     ],
@@ -27,30 +18,22 @@ const Tables = () => {
 
   const [tables, setTables] = useState (default_data);
 
-  const getTables = async () => {
-    try {
-      const res = await fetch ('http://localhost:8080/api/v1/tables');
-      const parsedRes = await res.json ();
-      setTables (parsedRes);
-    } catch (error) {
-      console.error ('Error fetching tables:', error);
-      setTables (default_data);
-    }
-  };
-
   useEffect (() => {
-    getTables ();
+    getTables (setTables, default_data);
   }, []);
 
   const handleReserve = id => {
+    reserveTable (id, setTables);
     console.log ('Reserve clicked for table ID:', id);
   };
 
   const handleRelease = id => {
+    releaseTable (id, setTables);
     console.log ('Release clicked for table ID:', id);
   };
 
   const handleDelete = id => {
+    deleteTable (id, setTables);
     console.log ('Delete clicked for table ID:', id);
   };
 

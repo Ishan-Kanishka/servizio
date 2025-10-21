@@ -23,18 +23,26 @@ public class TableService {
 
     public Table reserve(Integer tableId) {
         Table table = tableRepo.findById(tableId).orElse(null);
-        if (table == null) return null;
-        if (table.isAvailable() == false) return table; // already reserved
+        if (table == null)
+            return null;
+        if (table.isAvailable() == false)
+            return table; // already reserved
         table.setAvailable(false);
         return tableRepo.save(table);
     }
 
     public Table release(Integer tableId) {
         Table table = tableRepo.findById(tableId).orElse(null);
-        if (table == null) return null;
+        if (table == null)
+            return null;
         table.setAvailable(true);
         return tableRepo.save(table);
     }
+
+    public boolean delete(Integer tableId) {
+        if (!tableRepo.existsById(tableId))
+            return false;
+        tableRepo.deleteById(tableId);
+        return true;
+    }
 }
-
-

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,5 +66,17 @@ public class TableController {
         }
         res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), updated);
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{tableId}")
+    public ResponseEntity<GeneralResDTO> delete(@PathVariable Integer tableId) {
+        GeneralResDTO res = new GeneralResDTO();
+        boolean deleted = tableService.delete(tableId);
+        if (!deleted) {
+            res.setResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+        res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), null);
+        return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
     }
 }
