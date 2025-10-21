@@ -5,7 +5,10 @@ import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 const AddIngredients = () => {
   const [ingName, setingName] = useState ('');
   const handleAddIngredient = () => {
-    createIngredient (ingName);
+    createIngredient (ingName).then (res => {
+      console.log ('Ingredient added:', res);
+      alert ('Ingredient added successfully!');
+    });
   };
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-white">

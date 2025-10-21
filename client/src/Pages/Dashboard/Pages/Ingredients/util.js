@@ -13,7 +13,7 @@ const getIngredientById = async (id) => {
 };
 
 const createIngredient = async (ingredient_name) => {
-    let res = await fetch(`${URL}/`, {
+    let res = await fetch(`${URL}/save_ingredient`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

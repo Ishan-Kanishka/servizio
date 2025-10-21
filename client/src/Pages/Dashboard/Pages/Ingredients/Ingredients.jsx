@@ -50,9 +50,17 @@ const Ingredients = () => {
 
       {/* Page Content */}
       <div className="px-12 py-6">
-        <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
-          Ingredients
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-6">
+            Ingredients
+          </h1>
+          <button
+            onClick={() => navigator ('new')}
+            className="mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Add New Ingredient
+          </button>
+        </div>
 
         <div className="w-full bg-white rounded-xl shadow-md overflow-x-auto">
           {ingredients.data.length > 0
