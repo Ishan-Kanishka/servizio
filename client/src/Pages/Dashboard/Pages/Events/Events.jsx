@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Edit, Trash2} from 'lucide-react';
@@ -38,14 +39,14 @@ const Events = () => {
     getEvents ();
   }, []);
 
-  const handleEdit = id => {
-    console.log ('Edit event:', id);
-  };
+  const handleEdit = (id) => {
+  navigate(`/admin/events/edit/${id}`);
+ };
 
   const handleDelete = id => {
     console.log ('Delete event:', id);
   };
-
+  const navigate = useNavigate ();
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-white">
       <div className="w-full px-8 py-6 flex items-center justify-between bg-white shadow">
