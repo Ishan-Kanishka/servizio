@@ -1,14 +1,11 @@
 import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {ImageOff, Edit, Trash2} from 'lucide-react';
+import {deleteMenu} from './util';
 
 const Menu = () => {
   const handleEdit = menuId => {
     console.log ('Edit menu item:', menuId);
-  };
-
-  const handleDelete = menuId => {
-    console.log ('Delete menu item:', menuId);
   };
 
   const data = {
@@ -17,75 +14,12 @@ const Menu = () => {
     data: [
       {
         menuId: 1,
-        name: 'Burger',
-        description: 'Delicious beef burger',
-        imgUrl: 'https://example.com/1.png',
-        price: 1200,
+        name: 'None',
+        description: 'None None',
+        imgUrl: 'https://example.com/null.png',
+        price: 0,
         menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 2,
-        name: 'Pizza',
-        description: 'Cheesy pepperoni pizza',
-        imgUrl: 'https://example.com/2.png',
-        price: 1500,
-        menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 3,
-        name: 'Pasta',
-        description: 'Creamy Alfredo pasta',
-        imgUrl: 'https://example.com/3.png',
-        price: 1300,
-        menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 4,
-        name: 'Salad',
-        description: 'Fresh garden salad',
-        imgUrl: 'https://example.com/4.png',
-        price: 800,
-        menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 5,
-        name: 'Sushi',
-        description: 'Assorted sushi platter',
-        imgUrl: 'https://example.com/5.png',
-        price: 2000,
-        menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 6,
-        name: 'Steak',
-        description: 'Grilled ribeye steak',
-        imgUrl: 'https://example.com/6.png',
-        price: 2500,
-        menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 7,
-        name: 'Tacos',
-        description: 'Spicy chicken tacos',
-        imgUrl: 'https://example.com/7.png',
-        price: 1100,
-        menuIngredients: [],
-        available: true,
-      },
-      {
-        menuId: 8,
-        name: 'Leaf',
-        description: '1',
-        imgUrl: 'https://example.com/8.jpg',
-        price: 2000,
-        menuIngredients: [],
-        available: true,
+        available: false,
       },
     ],
   };
@@ -95,6 +29,17 @@ const Menu = () => {
     let res = await fetch ('http://localhost:8080/api/v1/menus/');
     let data = await res.json ();
     setMenus (data);
+  };
+
+  const handleDelete = menuId => {
+    console.log ('Delete menu item:', menuId);
+    deleteMenu (menuId).then (response => {
+      console.log ('Delete response:', response);
+      setMenus (prevMenus => ({
+        ...prevMenus,
+        data: prevMenus.data.filter (menu => menu.menuId !== menuId),
+      }));
+    });
   };
 
   useEffect (() => {

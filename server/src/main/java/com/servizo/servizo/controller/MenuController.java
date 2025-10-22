@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import com.servizo.servizo.service.MenuService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin
@@ -70,6 +72,34 @@ public class MenuController {
             MenuResponseDTO created_menu = menuService.saveMenu(menu);
             res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), created_menu);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/update_menu/{id}")
+    public ResponseEntity<GeneralResDTO> updateMenu(@PathVariable Long id, @RequestBody Menu menu) {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            Menu updated_menu = menuService.updateMenu(id, menu);
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), updated_menu);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete_menu/{id}")
+    public ResponseEntity<GeneralResDTO> deleteMenu(@PathVariable Long id) {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            menuService.deleteMenu(id);
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), "Menu deleted successfully");
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
