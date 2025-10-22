@@ -22,6 +22,7 @@ import com.servizo.servizo.model.OrderItemID;
 import com.servizo.servizo.repo.MenuRepo;
 import com.servizo.servizo.repo.OrderItemRepo;
 import com.servizo.servizo.repo.OrderRepo;
+import com.servizo.servizo.service.OrderItemService;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,7 @@ import java.util.Optional;
 public class OrderItemController {
 
     @Autowired
-    private OrderItemRepo orderItemRepo;
-
+    private OrderItemService orderItemService;
     @Autowired
     private OrderRepo orderRepo;
 
@@ -49,9 +49,10 @@ public class OrderItemController {
                 res.setResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), null);
                 return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
             }
-            // naive: fetch all then filter by order id (could add a repo method for efficiency)
-            List<OrderItem> all = orderItemRepo.findAll();
-            List<OrderItem> items = all.stream().filter(oi -> oi.getOrder() != null && oi.getOrder().getOrderId().equals(orderId)).toList();
+
+            List<OrderItem> all = orderItemService.getItemsByOrderId(orderId);
+            List<OrderItem> items = all.stream()
+                    .filter(oi -> oi.getOrder() != null && oi.getOrder().getOrderId().equals(orderId)).toList();
             if (items.isEmpty()) {
                 res.setResponse(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), null);
                 return new ResponseEntity<>(res, HttpStatus.NO_CONTENT);
@@ -59,13 +60,15 @@ public class OrderItemController {
             res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), items);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
-            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity<GeneralResDTO> addItemToOrder(@RequestParam("orderId") Long orderId, @RequestBody OrderItemDTO dto) {
+    public ResponseEntity<GeneralResDTO> addItemToOrder(@RequestParam("orderId") Long orderId,
+            @RequestBody OrderItemDTO dto) {
         GeneralResDTO res = new GeneralResDTO();
         try {
             Optional<Order> orderOpt = orderRepo.findById(orderId);
@@ -89,33 +92,33 @@ public class OrderItemController {
             orderItem.setPrice(menu.getPrice() * dto.getQuantity());
             orderItem.setOrderItemId(new OrderItemID(order.getOrderId(), menu.getMenuId()));
 
-            OrderItem saved = orderItemRepo.save(orderItem);
+            OrderItem saved = orderItemService.saveOrderItem(orderItem);
             res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), saved);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
         } catch (Exception e) {
-            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping
-    public ResponseEntity<GeneralResDTO> deleteItem(@RequestParam("orderId") Long orderId, @RequestParam("menuId") Long menuId) {
+    public ResponseEntity<GeneralResDTO> deleteItem(@RequestParam("orderId") Long orderId,
+            @RequestParam("menuId") Long menuId) {
         GeneralResDTO res = new GeneralResDTO();
         try {
             OrderItemID id = new OrderItemID(orderId, menuId);
-            Optional<OrderItem> existing = orderItemRepo.findById(id);
-            if (existing.isEmpty()) {
+            boolean orderItemOpt = orderItemService.deleteItem(id);
+            if (!orderItemOpt) {
                 res.setResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), null);
                 return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
             }
-            orderItemRepo.deleteById(id);
             res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
-            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
-
-

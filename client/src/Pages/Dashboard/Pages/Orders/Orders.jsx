@@ -1,10 +1,10 @@
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
-import {Edit, Trash2} from 'lucide-react';
+import {Trash2} from 'lucide-react';
 import {useEffect, useState} from 'react';
+import {deleteOrderById} from './utils';
 
 const Orders = () => {
-  const navigate = useNavigate ();
   const default_data = {
     code: 202,
     message: 'Accepted',
@@ -50,10 +50,6 @@ const Orders = () => {
     },
     [sortBy]
   );
-  const handleEdit = id => {
-    console.log ('Edit order:', id);
-    navigate (`/admin/orders/edit/${id}`);
-  };
 
   const handleFilterOption = e => {
     setSortBy (e.target.value);
@@ -61,6 +57,9 @@ const Orders = () => {
   };
 
   const handleDelete = id => {
+    deleteOrderById (id).then (() => {
+      getOrders (sortBy); // Refresh orders after deletion
+    });
     console.log ('Delete order:', id);
   };
 
@@ -133,13 +132,6 @@ const Orders = () => {
                   </div>
 
                   <div className="mt-4 sm:mt-0 flex gap-3">
-                    <button
-                      onClick={() => handleEdit (order.orderId)}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-600 hover:bg-blue-200 text-sm font-medium rounded-lg transition duration-200"
-                    >
-                      <Edit className="w-4 h-4" />
-                      Edit
-                    </button>
                     <button
                       onClick={() => handleDelete (order.orderId)}
                       className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-600 hover:bg-red-200 text-sm font-medium rounded-lg transition duration-200"

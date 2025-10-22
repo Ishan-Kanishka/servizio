@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,6 +62,25 @@ public class OrderController {
             } else {
                 res.setResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), null);
                 return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete_order")
+    public ResponseEntity<GeneralResDTO> deleteOrder(@RequestParam Long id) {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            boolean deleted = orderService.deleteOrderById(id);
+            if (deleted) {
+                res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), null);
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            } else {
+                res.setResponse(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase(), null);
+                return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),

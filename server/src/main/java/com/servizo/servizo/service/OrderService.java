@@ -113,4 +113,20 @@ public class OrderService {
         List<Order> orders = orderRepo.findAll();
         return orderSorter.getSortedOrders(orders, sortBy);
     }
+
+    public boolean deleteOrderById(Long id) {
+        try {
+            if (orderRepo.existsById(id)) {
+                // 1. Delete Order Items
+                orderItemRepo.deleteByOrderId(id);
+                // 2. Delete Order
+                orderRepo.deleteById(id);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
