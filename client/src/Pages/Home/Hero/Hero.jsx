@@ -26,7 +26,7 @@ const Hero = () => {
         </div>
       </div>
       <div
-        className="size-96 hidden md:block col-span-1 md:col-span-6"
+        className="size-96 outline hidden md:block col-span-1 md:col-span-6"
         style={plate_bg}
       />
     </div>
