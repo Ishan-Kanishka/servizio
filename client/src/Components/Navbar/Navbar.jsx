@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useCart} from '../../Contexts/useCart';
-import {ShoppingCart} from 'lucide-react';
+import {ShoppingCart, UserCircle2} from 'lucide-react';
 import {Link} from 'react-router-dom';
 
 export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
@@ -17,13 +17,20 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
     <div className="fixed w-screen z-10">
       {/* Desktop Navigation */}
       <nav className="hidden md:flex w-screen h-14 bg-green-300 items-center justify-between px-12">
-        <div className="nav-logo">
+        <Link to="/" className="nav-logo cursor-pointer text-lg font-bold">
           {nav_brand}
-        </div>
+        </Link>
         <div className="nav-items">
           <ul className="flex items-center gap-5">
             {navLinks.map ((link, i) => (
-              <li key={i}><Link to={link.path}>{link.name}</Link></li>
+              <li key={i}>
+                <Link
+                  to={link.path}
+                  className="hover:underline text-md font-medium"
+                >
+                  {link.name}
+                </Link>
+              </li>
             ))}
           </ul>
         </div>
@@ -37,9 +44,25 @@ export const Navbar = ({nav_brand = <h2>Title</h2>}) => {
                 </span>}
             </Link>
           </div>
-          <button className="px-3 py-2 rounded-xl bg-gray-100">
-            Get Started
-          </button>
+          <div className="relative group">
+            <div className="cursor-pointer p-1.5 rounded-full border-2 border-black">
+              <UserCircle2 className="text-lg text-black" />
+            </div>
+            <div className="invisible w-0 h-0 opacity-0 group-hover:h-fit group-hover:opacity-100 group-hover:flex group-hover:visible group-hover:w-44 flex-col absolute top-12 right-0 bg-white shadow-lg text-center transition-all duration-150 rounded-md gap-2">
+              <Link
+                to="/login"
+                className="px-4 py-2 text-md text-bold hover:bg-green-200 text-green-700 cursor-pointer rounded-b-md"
+              >
+                Login
+              </Link>
+              <Link
+                to="/login"
+                className="px-4 py-2 text-md text-bold hover:bg-green-200 text-green-700 cursor-pointer rounded-b-md"
+              >
+                Sign Up
+              </Link>
+            </div>
+          </div>
         </div>
       </nav>
 
