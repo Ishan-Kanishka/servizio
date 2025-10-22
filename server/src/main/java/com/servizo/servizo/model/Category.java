@@ -25,6 +25,6 @@ public class Category {
     private String catName;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "category-menus")
     private List<Menu> menus;
 }

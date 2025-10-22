@@ -3,6 +3,11 @@ const getMenus = async () => {
     return await res.json();
 };
 
+const getMenuById = async (menuId) => {
+    let res = await fetch(`http://localhost:8080/api/v1/menus/${menuId}`);
+    return await res.json();
+}
+
 const updateMenu = async (menuId, menuData) => {
     let res = await fetch(`http://localhost:8080/api/v1/menus/update_menu/${menuId}`, {
         method: 'PUT',
@@ -21,4 +26,4 @@ const deleteMenu = async (menuId) => {
     return await res.json();
 }
 
-export { getMenus, updateMenu, deleteMenu };
+export { getMenus, getMenuById, updateMenu, deleteMenu };

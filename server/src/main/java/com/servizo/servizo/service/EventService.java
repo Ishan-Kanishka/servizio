@@ -52,6 +52,11 @@ public class EventService {
     public void deleteEvent(Long eventId) {
         Event existingEvent = eventRepo.findById(eventId).orElseThrow(
                 () -> new RuntimeException("Event not found with id: " + eventId));
+        // 1. remove event from customer events list
+        Customer customer = existingEvent.getCustomer();
+        customer.getEvents().remove(existingEvent);
+        customerRepo.save(customer);
+        // 2. delete event
         eventRepo.delete(existingEvent);
     }
 }

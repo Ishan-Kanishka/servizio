@@ -33,11 +33,11 @@ public class Menu {
 
     @ManyToOne
     @JoinColumn(name = "cat_id")
-    @JsonBackReference
+    @JsonBackReference(value = "category-menus")
     private Category category;
 
     @OneToMany(mappedBy = "menu")
-    @JsonManagedReference
+    @JsonManagedReference(value = "menu-ingredients")
     List<MenuIngredients> menuIngredients;
 
 }

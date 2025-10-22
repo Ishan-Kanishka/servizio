@@ -1,7 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {Edit, Trash2} from 'lucide-react';
+import {deleteEvent} from './util';
 
 const Events = () => {
   const data = {
@@ -39,12 +40,15 @@ const Events = () => {
     getEvents ();
   }, []);
 
-  const handleEdit = (id) => {
-  navigate(`/admin/events/edit/${id}`);
- };
+  const handleEdit = id => {
+    navigate (`/admin/events/edit/${id}`);
+  };
 
   const handleDelete = id => {
     console.log ('Delete event:', id);
+    deleteEvent (id).then (() => {
+      getEvents (); // Refresh the events list after deletion
+    });
   };
   const navigate = useNavigate ();
   return (

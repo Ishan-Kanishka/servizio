@@ -19,13 +19,13 @@ public class MenuIngredients {
     @ManyToOne
     @MapsId("menuId")
     @JoinColumn(name = "menu_id")
-    @JsonBackReference
+    @JsonBackReference(value = "menu-ingredients")
     private Menu menu;
 
     @ManyToOne
     @MapsId("ingId")
     @JoinColumn(name = "ing_id")
-    @JsonBackReference
+    @JsonBackReference(value = "ingredient-menus")
     private Ingredients ingredients;
 
     private Integer quantity;

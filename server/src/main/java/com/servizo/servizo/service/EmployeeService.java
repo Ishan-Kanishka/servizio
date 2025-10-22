@@ -29,4 +29,12 @@ public class EmployeeService {
         employee.setRole(role);
         return employeeRepo.save(employee);
     }
+
+    public Employee update(Employee employee) {
+        return employeeRepo.save(employee);
+    }
+
+    public void delete(Long id) {
+        employeeRepo.deleteById(id);
+    }
 }

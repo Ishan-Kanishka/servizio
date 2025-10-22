@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ import com.servizo.servizo.service.EventService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin
@@ -47,6 +49,34 @@ public class EventController {
             Event newEvent = eventService.saveEvent(event);
             res.setResponse(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase(), newEvent);
             return new ResponseEntity<>(res, HttpStatus.CREATED);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/update_event")
+    public ResponseEntity<GeneralResDTO> updateEvent(@RequestBody EventRequestDTO event) {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            Event updatedEvent = eventService.updateEvent(event);
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), updatedEvent);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete_event")
+    public ResponseEntity<GeneralResDTO> deleteEvent(@RequestBody EventRequestDTO event) {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            eventService.deleteEvent(event.getEventId());
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), "Event deleted successfully");
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), e);

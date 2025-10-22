@@ -2,12 +2,9 @@ import {useEffect, useState} from 'react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {ImageOff, Edit, Trash2} from 'lucide-react';
 import {deleteMenu} from './util';
+import {useNavigate} from 'react-router-dom';
 
 const Menu = () => {
-  const handleEdit = menuId => {
-    console.log ('Edit menu item:', menuId);
-  };
-
   const data = {
     code: 200,
     message: 'OK',
@@ -24,11 +21,17 @@ const Menu = () => {
     ],
   };
   const [menus, setMenus] = useState (data);
+  const navigator = useNavigate ();
 
   const getMenus = async () => {
     let res = await fetch ('http://localhost:8080/api/v1/menus/');
     let data = await res.json ();
     setMenus (data);
+  };
+
+  const handleEdit = menuId => {
+    console.log ('Edit menu item:', menuId);
+    navigator (`/admin/menu/edit/${menuId}`);
   };
 
   const handleDelete = menuId => {
