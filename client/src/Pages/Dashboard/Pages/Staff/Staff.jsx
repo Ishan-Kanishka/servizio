@@ -1,6 +1,8 @@
 import {Pencil, Trash2, Users} from 'lucide-react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {useEffect, useState} from 'react';
+import {deleteEmployee, getEmployees} from './utils';
+import {useNavigate} from 'react-router-dom';
 
 const Staff = () => {
   const default_data = {
@@ -25,13 +27,15 @@ const Staff = () => {
   };
 
   const [staff, setStaff] = useState (default_data);
+  const navigate = useNavigate ();
 
   const getStaff = async () => {
     try {
-      let res = await fetch ('http://localhost:8080/api/v1/employee/');
-      res = await res.json ();
-      setStaff (res);
-      console.log ('Fetched staff:', res);
+      getEmployees ().then (res => {
+        if (res) {
+          setStaff (res);
+        }
+      });
     } catch (err) {
       console.error ('Failed to fetch staff:', err);
     }
@@ -43,12 +47,19 @@ const Staff = () => {
 
   const handleEdit = id => {
     console.log ('Edit staff', id);
-    // Navigate or modal logic here
+    navigate (`/admin/staff/edit/${id}`);
   };
 
   const handleDelete = id => {
     console.log ('Delete staff', id);
-    // Confirm and delete logic
+    deleteEmployee (id).then (success => {
+      if (success) {
+        setStaff (prevStaff => ({
+          ...prevStaff,
+          data: prevStaff.data.filter (employee => employee.id !== id),
+        }));
+      }
+    });
   };
 
   return (

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.servizo.servizo.DTO.GeneralResDTO;
@@ -32,6 +33,19 @@ public class EmployeeController {
         try {
             List<Employee> employees = employeeService.getAll();
             res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), employees);
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get_employee")
+    public ResponseEntity<GeneralResDTO> getById(@RequestParam Long id) {
+        GeneralResDTO res = new GeneralResDTO();
+        try {
+            Employee employee = employeeService.getById(id);
+            res.setResponse(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), employee);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             res.setResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), null);
@@ -66,10 +80,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/delete_employee")
-    public ResponseEntity<GeneralResDTO> delete(@RequestBody Employee employee) {
+    public ResponseEntity<GeneralResDTO> delete(@RequestParam Long id) {
         GeneralResDTO res = new GeneralResDTO();
         try {
-            employeeService.delete(employee.getId());
+            employeeService.delete(id);
             res.setResponse(HttpStatus.OK.value(), "Employee deleted successfully", null);
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {

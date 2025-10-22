@@ -22,6 +22,10 @@ public class EmployeeService {
         return employeeRepo.findAll();
     }
 
+    public Employee getById(Long id) {
+        return employeeRepo.findById(id).orElse(null);
+    }
+
     public Employee save(Employee employee) {
         Role role = roleRepo.findByRoleName("CASHIER").orElse(null);
         if (role == null)

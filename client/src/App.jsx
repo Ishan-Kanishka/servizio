@@ -34,6 +34,7 @@ import OrderDetails from './Pages/Dashboard/Pages/Orders/OrderDetails';
 import EditCustomer from './Pages/Dashboard/Pages/Customers/EditCustomer';
 import EditMenu from './Pages/Dashboard/Pages/Menu/EditMenu';
 import EditEvent from './Pages/Dashboard/Pages/Events/EditEvent';
+import EditStaff from './Pages/Dashboard/Pages/Staff/EditStaff';
 
 const App = () => {
   return (
@@ -88,7 +89,10 @@ const App = () => {
             <Route index element={<Customers />} />
             <Route path="edit/:id" element={<EditCustomer />} />
           </Route>
-          <Route path="staff" element={<Staff />} />
+          <Route path="staff">
+            <Route index element={<Staff />} />
+            <Route path="edit/:id" element={<EditStaff />} />
+          </Route>
           <Route path="roles" element={<Roles />} />
           <Route path="promotions">
             <Route index element={<Promotions />} />
