@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import BreadCrumb from '../../Components/BradCrumb/BreadCrumb';
+import {getOrders} from './Pages/Orders/utils';
 
 const Dashboard = () => {
+  const [orders, setOrders] = useState ([]);
+
+  useEffect (() => {
+    getOrders ('id').then (data => setOrders (data.data));
+    console.log (orders);
+  }, []);
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-slate-100 to-white">
       <div className="w-full px-8 py-4 flex items-center justify-between">
@@ -16,10 +23,16 @@ const Dashboard = () => {
         Dashboard Overview
       </h1>
       <div className="w-full px-12 grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
-        <DashboardCard title="Total Orders" value="150" />
+        <DashboardCard title="Total Orders" value={orders.length} />
         <DashboardCard title="Total Customers" value="75" />
-        <DashboardCard title="Total Revenue" value="$12,500" />
-        <DashboardCard title="Pending Orders" value="20" />
+        <DashboardCard
+          title="Total Revenue"
+          value={orders.reduce ((acc, order) => acc + order.price, 0)}
+        />
+        <DashboardCard
+          title="Pending Orders"
+          value={orders.filter (order => !order.status).length}
+        />
       </div>
       <div>
         <div className="w-full bg-white p-6 rounded-lg shadow-md">
@@ -30,45 +43,41 @@ const Dashboard = () => {
             <thead>
               <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <th className="py-3 px-6 text-left">Order ID</th>
-                <th className="py-3 px-6 text-left">Customer</th>
+                <th className="py-3 px-6 text-left">Note</th>
                 <th className="py-3 px-6 text-left">Date</th>
                 <th className="py-3 px-6 text-left">Status</th>
                 <th className="py-3 px-6 text-left">Total</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              <tr className="border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-3 px-6 text-left whitespace-nowrap">
-                  #1001
-                </td>
-                <td className="py-3 px-6 text-left">John Doe</td>
-                <td className="py-3 px-6 text-left">2024-06-01</td>
-                <td className="py-3 px-6 text-left">Completed</td>
-                <td className="py-3 px-6 text-left">$250.00</td>
-              </tr>
-              <tr className="border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-3 px-6 text-left whitespace-nowrap">
-                  #1002
-                </td>
-                <td className="py-3 px-6 text-left">Jane Smith</td>
-                <td className="py-3 px-6 text-left">2024-06-02</td>
-                <td className="py-3 px-6 text-left">Pending</td>
-                <td className="py-3 px-6 text-left">$150.00</td>
-              </tr>
-              <tr className="border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-3 px-6 text-left whitespace-nowrap">#1003</td>
-                <td className="py-3 px-6 text-left">Alice Johnson</td>
-                <td className="py-3 px-6 text-left">2024-06-03</td>
-                <td className="py-3 px-6 text-left">Shipped</td>
-                <td className="py-3 px-6 text-left">$300.00</td>
-              </tr>
-              <tr className="border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-3 px-6 text-left whitespace-nowrap">#1004</td>
-                <td className="py-3 px-6 text-left">Bob Brown</td>
-                <td className="py-3 px-6 text-left">2024-06-04</td>
-                <td className="py-3 px-6 text-left">Cancelled</td>
-                <td className="py-3 px-6 text-left">$0.00</td>
-              </tr>
+              {orders.length > 0
+                ? orders.slice (0, 5).map (order => (
+                    <tr
+                      key={order.orderId}
+                      className="border-b border-gray-200 hover:bg-gray-100"
+                    >
+                      <td className="py-3 px-6 text-left whitespace-nowrap">
+                        {order.orderId}
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        {order.note}
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        {new Date (order.date).toLocaleDateString ()}
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        {order.status ? 'Completed' : 'Pending'}
+                      </td>
+                      <td className="py-3 px-6 text-left">
+                        ${order.price}
+                      </td>
+                    </tr>
+                  ))
+                : <tr>
+                    <td colSpan="5" className="text-center py-4">
+                      No orders found.
+                    </td>
+                  </tr>}
             </tbody>
           </table>
         </div>
