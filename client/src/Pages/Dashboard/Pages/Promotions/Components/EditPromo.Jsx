@@ -1,61 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
+import {getPromotionById, updatePromotionById} from '../Promotions/utils';
 
-const validate = values => {
-  const errors = {};
-  if (!values.name || !values.name.trim ()) errors.name = 'Name is required';
-  if (!values.startDate) errors.startDate = 'Start date is required';
-  if (!values.endDate) errors.endDate = 'End date is required';
-  if (values.startDate && values.endDate) {
-    const s = new Date (values.startDate);
-    const e = new Date (values.endDate);
-    if (e < s) errors.endDate = 'End date must be after start date';
-  }
-  const d = Number (values.discount);
-  if (values.discount === '' || Number.isNaN (d)) {
-    errors.discount = 'Valid discount is required';
-  } else if (d < 0 || d > 100) {
-    errors.discount = 'Discount must be between 0 and 100';
-  }
-  return errors;
-};
-
-const EditPromo = ({initialValues, onSubmit, onCancel}) => {
-  // Get id from url params
+const EditPromo = () => {
   const {id} = useParams ();
-
-  const [values, setValues] = React.useState (
-    initialValues || {name: '', startDate: '', endDate: '', discount: ''}
-  );
-  const [touched, setTouched] = React.useState ({});
-  const errors = React.useMemo (() => validate (values), [values]);
-  const hasError = key => touched[key] && errors[key];
-
-  const handleChange = e => {
-    const {name, value} = e.target;
-    setValues (v => ({...v, [name]: value}));
-  };
-
-  const handleBlur = e => {
-    const {name} = e.target;
-    setTouched (t => ({...t, [name]: true}));
-  };
+  const [promotion, setPromotion] = useState ({
+    name: '',
+    startDate: '',
+    endDate: '',
+    discount: '',
+  });
 
   const handleSubmit = e => {
     e.preventDefault ();
-    setTouched ({name: true, startDate: true, endDate: true, discount: true});
-    const cur = validate (values);
-    if (Object.keys (cur).length) return;
-    const payload = {
-      id, // include the id here, useful for updating existing promo
-      name: values.name.trim (),
-      startDate: values.startDate,
-      endDate: values.endDate,
-      discount: Number (values.discount),
-    };
-    if (onSubmit) onSubmit (payload);
+    updatePromotionById (id, {
+      ...promotion,
+      discount: Number (promotion.discount) / 100,
+    }).then (data => {
+      if (data.code === 200) {
+        alert ('Promotion updated successfully!');
+      } else {
+        alert ('Error updating promotion: ' + data.message);
+      }
+    });
   };
 
+  useEffect (() => {
+    getPromotionById (id).then (data => {
+      if (data) {
+        setPromotion ({
+          name: data.name,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          discount: data.discount * 100,
+        });
+      }
+    });
+  }, []);
   return (
     <div className="w-full bg-white">
       <form
@@ -68,6 +49,7 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
 
         <div className="space-y-5">
           <div>
+
             <label
               htmlFor="name"
               className="block text-sm font-semibold text-gray-700"
@@ -78,14 +60,12 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
               id="name"
               name="name"
               type="text"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('name') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+              value={promotion.name}
+              onChange={e =>
+                setPromotion ({...promotion, name: e.target.value})}
+              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2`}
               placeholder="e.g., Summer Sale"
             />
-            {hasError ('name') &&
-              <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -100,13 +80,13 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
                 id="startDate"
                 name="startDate"
                 type="date"
-                value={values.startDate}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('startDate') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+                value={promotion.startDate}
+                onChange={e =>
+                  setPromotion ({...promotion, startDate: e.target.value})}
+                min={promotion.startDate}
+                max={promotion.endDate || ''}
+                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2`}
               />
-              {hasError ('startDate') &&
-                <p className="mt-1 text-xs text-red-600">{errors.startDate}</p>}
             </div>
 
             <div>
@@ -120,13 +100,15 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
                 id="endDate"
                 name="endDate"
                 type="date"
-                value={values.endDate}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('endDate') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+                value={promotion.endDate}
+                onChange={e =>
+                  setPromotion ({...promotion, endDate: e.target.value})}
+                min={
+                  promotion.startDate ||
+                    new Date ().toISOString ().split ('T')[0]
+                }
+                className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2`}
               />
-              {hasError ('endDate') &&
-                <p className="mt-1 text-xs text-red-600">{errors.endDate}</p>}
             </div>
           </div>
 
@@ -144,27 +126,22 @@ const EditPromo = ({initialValues, onSubmit, onCancel}) => {
               min="0"
               max="100"
               step="1"
-              value={values.discount}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${hasError ('discount') ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-green-200'}`}
+              value={promotion.discount}
+              onChange={e =>
+                setPromotion ({
+                  ...promotion,
+                  discount: Number (e.target.value),
+                })}
+              className={`mt-1 block w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2`}
               placeholder="e.g., 20"
             />
-            {hasError ('discount') &&
-              <p className="mt-1 text-xs text-red-600">{errors.discount}</p>}
           </div>
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-3">
           <button
-            type="button"
-            onClick={() => onCancel && onCancel ()}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition"
-          >
-            Cancel
-          </button>
-          <button
             type="submit"
+            onClick={handleSubmit}
             className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-md shadow transition"
           >
             Save Changes

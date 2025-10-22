@@ -2,6 +2,7 @@ import {Award, Pencil, Plus, Trash2} from 'lucide-react';
 import BreadCrumb from '../../../../../Components/BradCrumb/BreadCrumb';
 import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
+import {deletePromotionById} from './utils';
 
 const Promotions = () => {
   const defaultPromotions = [
@@ -11,34 +12,6 @@ const Promotions = () => {
       startDate: '2024-06-01',
       endDate: '2024-06-30',
       discount: '20%',
-    },
-    {
-      id: 2,
-      name: 'Winter Sale',
-      startDate: '2024-12-01',
-      endDate: '2024-12-31',
-      discount: '25%',
-    },
-    {
-      id: 3,
-      name: 'Black Friday',
-      startDate: '2024-11-29',
-      endDate: '2024-11-29',
-      discount: '50%',
-    },
-    {
-      id: 4,
-      name: 'Cyber Monday',
-      startDate: '2024-12-02',
-      endDate: '2024-12-02',
-      discount: '40%',
-    },
-    {
-      id: 5,
-      name: 'Spring Sale',
-      startDate: '2024-03-01',
-      endDate: '2024-03-31',
-      discount: '15%',
     },
   ];
 
@@ -67,7 +40,13 @@ const Promotions = () => {
 
   const deletePromotion = id => {
     console.log (`Delete promotion with ID: ${id}`);
-    deletePromotionById (id);
+    deletePromotionById (id).then (data => {
+      if (data.code === 200) {
+        getPromotions (); // Refresh the promotions list after deletion
+      } else {
+        console.error ('Error deleting promotion:', data.message);
+      }
+    });
   };
 
   useEffect (() => {
@@ -157,7 +136,8 @@ const Promotions = () => {
                       <td className="px-6 py-4 text-gray-800">
                         <div className="flex items-center gap-3">
                           <button
-                            onClick={() => editPromotion (promotion.id)}
+                            onClick={() =>
+                              editPromotion (promotion.promotionId)}
                             className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white font-bold rounded-md text-xs transition"
                           >
                             <Pencil className="w-4 h-4" />
@@ -165,7 +145,8 @@ const Promotions = () => {
                           </button>
 
                           <button
-                            onClick={() => deletePromotion (promotion.id)}
+                            onClick={() =>
+                              deletePromotion (promotion.promotionId)}
                             className="inline-flex items-center gap-1 px-3 py-1.5 border border-red-500 text-red-500 hover:bg-red-50 rounded-md text-xs font-medium transition"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -185,16 +166,3 @@ const Promotions = () => {
 };
 
 export default Promotions;
-
-const deletePromotionById = async id => {
-  console.log (`Delete promotion with ID: ${id}`);
-  let res = await fetch (`http://localhost:8080/api/v1/promotions/${id}`, {
-    method: 'DELETE',
-  });
-  let data = await res.json ();
-  if (data.code === 200) {
-    window.location.reload ();
-  } else {
-    console.error ('Error deleting promotion:', data.message);
-  }
-};

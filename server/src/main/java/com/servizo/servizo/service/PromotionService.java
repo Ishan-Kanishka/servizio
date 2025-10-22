@@ -17,9 +17,19 @@ public class PromotionService {
         return promotionRepo.findAll();
     }
 
+    public Promotion getById(Long id) {
+        return promotionRepo.findById(id).orElse(null);
+    }
+
     public Promotion save(Promotion promotion) {
         return promotionRepo.save(promotion);
     }
+
+    public Promotion update(Promotion promotion) {
+        return promotionRepo.save(promotion);
+    }
+
+    public void delete(Long promotionId) {
+        promotionRepo.deleteById(promotionId);
+    }
 }
-
-

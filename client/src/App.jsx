@@ -23,7 +23,6 @@ import EventRequest from './Pages/EventRequest/EventRequest';
 import Promotions
   from './Pages/Dashboard/Pages/Promotions/Promotions/Promotions';
 import AddPromo from './Pages/Dashboard/Pages/Promotions/Components/AddPromo';
-import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/EditPromo';
 import Tables from './Pages/Dashboard/Pages/Tables/Tables';
 import Checkout from './Pages/Checkout/Checkout';
 import Successful from './Pages/Successful/Successful';
@@ -35,6 +34,7 @@ import EditCustomer from './Pages/Dashboard/Pages/Customers/EditCustomer';
 import EditMenu from './Pages/Dashboard/Pages/Menu/EditMenu';
 import EditEvent from './Pages/Dashboard/Pages/Events/EditEvent';
 import EditStaff from './Pages/Dashboard/Pages/Staff/EditStaff';
+import EditPromo from './Pages/Dashboard/Pages/Promotions/Components/EditPromo';
 
 const App = () => {
   return (
