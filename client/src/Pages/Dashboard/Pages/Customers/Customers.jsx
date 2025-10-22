@@ -1,6 +1,8 @@
 import {Pencil, Trash2, User} from 'lucide-react';
 import BreadCrumb from '../../../../Components/BradCrumb/BreadCrumb';
 import {useEffect, useState} from 'react';
+import {deleteCustomer, getCustomers} from './utils';
+import {useNavigate} from 'react-router-dom';
 
 const Customers = () => {
   const data = {
@@ -47,25 +49,28 @@ const Customers = () => {
   };
 
   const [customers, setCustomers] = useState (data);
+  const navigate = useNavigate ();
 
-  const getCustomers = async () => {
-    let res = await fetch ('http://localhost:8080/api/v1/customer/');
-    res = await res.json ();
-    setCustomers (res);
-    console.log (res);
-  };
   useEffect (() => {
+    getCustomers ().then (res => setCustomers (res));
     getCustomers ();
   }, []);
 
   const handleEdit = customerId => {
     console.log ('Edit customer', customerId);
-    // Navigate to edit page or open modal
+    navigate (`/admin/customers/edit/${customerId}`);
   };
 
   const handleDelete = customerId => {
     console.log ('Delete customer', customerId);
-    // Confirm and delete logic
+    deleteCustomer (customerId).then (success => {
+      if (success) {
+        setCustomers (prevState => ({
+          ...prevState,
+          data: prevState.data.filter (customer => customer.id !== customerId),
+        }));
+      }
+    });
   };
 
   return (

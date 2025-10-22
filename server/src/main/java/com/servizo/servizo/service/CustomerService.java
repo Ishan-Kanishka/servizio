@@ -54,6 +54,16 @@ public class CustomerService {
     }
 
     /**
+     * Update customer
+     * 
+     * @param customer
+     * @return Customer
+     */
+    public Customer updateCustomer(Customer customer) {
+        return customerRepo.save(customer);
+    }
+
+    /**
      * Delete customer by id
      * 
      * @param customerId

@@ -31,6 +31,7 @@ import EditIngredients
   from './Pages/Dashboard/Pages/Ingredients/EditIngredients';
 import AddIngredients from './Pages/Dashboard/Pages/Ingredients/AddIngredients';
 import OrderDetails from './Pages/Dashboard/Pages/Orders/OrderDetails';
+import EditCustomer from './Pages/Dashboard/Pages/Customers/EditCustomer';
 
 const App = () => {
   return (
@@ -75,7 +76,10 @@ const App = () => {
             <Route path="edit/:id" element={<EditIngredients />} />
           </Route>
           <Route path="events" element={<Event />} />
-          <Route path="customers" element={<Customers />} />
+          <Route path="customers">
+            <Route index element={<Customers />} />
+            <Route path="edit/:id" element={<EditCustomer />} />
+          </Route>
           <Route path="staff" element={<Staff />} />
           <Route path="roles" element={<Roles />} />
           <Route path="promotions">
